@@ -17,6 +17,7 @@ public:
 	RenderWindow(RenderWindow&&) = default;
 	~RenderWindow() = default;
 
+	void close();
 	void display();
 	bool is_open() const;
 	std::optional<Input::Event> poll_event();

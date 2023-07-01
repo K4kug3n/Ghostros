@@ -6,6 +6,11 @@ RenderWindow::RenderWindow(unsigned width, unsigned height, const std::string& t
 	: m_handle(sf::VideoMode{ width, height, 32 }, title)
 {}
 
+void RenderWindow::close()
+{
+	m_handle.close();
+}
+
 void RenderWindow::display()
 {
 	m_handle.display();
