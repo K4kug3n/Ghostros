@@ -18,7 +18,7 @@ public:
 
 	TileSet() = delete;
 	TileSet(std::filesystem::path filepath, uint16_t tilesize, std::vector<Tile> tiles);
-	TileSet(const TileSet&) = default;
+	TileSet(const TileSet&) = delete;
 	TileSet(TileSet&&) = default;
 	~TileSet() = default;
 
@@ -27,7 +27,7 @@ public:
 
 	static TileSet LoadFromJson(const nlohmann::json& data);
 
-	TileSet& operator=(const TileSet&) = default;
+	TileSet& operator=(const TileSet&) = delete;
 	TileSet& operator=(TileSet&&) = default;
 
 private:	

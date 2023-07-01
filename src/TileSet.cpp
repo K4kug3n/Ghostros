@@ -8,6 +8,7 @@ TileSet::TileSet(std::filesystem::path filepath, uint16_t tilesize, std::vector<
 
 bool TileSet::get_tile_collision(uint8_t id) const
 {
+	assert(id < m_tiles.size());
 	return m_tiles[id].collide;
 }
 

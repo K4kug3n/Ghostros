@@ -12,7 +12,7 @@ class TileMap
 public:
 	TileMap() = delete;
 	TileMap(unsigned cols, unsigned rows, std::vector<uint8_t> map, TileSet tile_set);
-	TileMap(const TileMap&) = default;
+	TileMap(const TileMap&) = delete;
 	TileMap(TileMap&&) = default;
 	~TileMap() = default;
 
@@ -21,7 +21,7 @@ public:
 
 	static TileMap LoadFromFile(const std::filesystem::path& filepath);
 
-	TileMap& operator=(const TileMap&) = default;
+	TileMap& operator=(const TileMap&) = delete;
 	TileMap& operator=(TileMap&&) = default;
 
 private:
