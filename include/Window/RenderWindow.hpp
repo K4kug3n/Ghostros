@@ -2,8 +2,11 @@
 #define WINODW_RENDERWINDOW_HPP
 
 #include <string>
+#include <optional>
 
 #include <SFML/Graphics/RenderWindow.hpp>
+
+#include <Window/InputEvent.hpp>
 
 class RenderWindow
 {
@@ -16,6 +19,7 @@ public:
 
 	void display();
 	bool is_open() const;
+	std::optional<Input::Event> poll_event();
 
 	RenderWindow& operator=(const RenderWindow&) = delete;
 	RenderWindow& operator=(RenderWindow&&) = default;
