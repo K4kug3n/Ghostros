@@ -6,7 +6,10 @@
 
 #include <SFML/Graphics/RenderWindow.hpp>
 
-#include <Window/InputEvent.hpp>
+#include "Window/InputEvent.hpp"
+#include "Maths/Vector2.hpp"
+
+class Camera;
 
 class RenderWindow
 {
@@ -21,8 +24,10 @@ public:
 	void close();
 	void display();
 	void draw(const sf::Drawable& drawable, const sf::RenderStates& states = sf::RenderStates::Default);
+	Vector2u get_size() const;
 	bool is_open() const;
 	std::optional<Input::Event> poll_event();
+	void set_camera(const Camera& camera);
 
 	RenderWindow& operator=(const RenderWindow&) = delete;
 	RenderWindow& operator=(RenderWindow&&) = default;

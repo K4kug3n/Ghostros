@@ -2,6 +2,8 @@
 
 #include <SFML/Window/Event.hpp>
 
+#include "Graphics/Camera.hpp"
+
 RenderWindow::RenderWindow(unsigned width, unsigned height, const std::string& title)
 	: m_handle(sf::VideoMode{ width, height, 32 }, title)
 {}
@@ -26,6 +28,12 @@ void RenderWindow::draw(const sf::Drawable& drawable, const sf::RenderStates& st
 	m_handle.draw(drawable, states);
 }
 
+Vector2u RenderWindow::get_size() const
+{
+	const sf::Vector2u size = m_handle.getSize();
+	return Vector2u{ size.x, size.y };
+}
+
 bool RenderWindow::is_open() const
 {
 	return m_handle.isOpen();
@@ -40,4 +48,9 @@ std::optional<Input::Event> RenderWindow::poll_event()
 	}
 
 	return std::nullopt;
+}
+
+void RenderWindow::set_camera(const Camera& camera)
+{
+	m_handle.setView(camera.get_view());
 }
