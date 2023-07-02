@@ -6,6 +6,11 @@ RenderWindow::RenderWindow(unsigned width, unsigned height, const std::string& t
 	: m_handle(sf::VideoMode{ width, height, 32 }, title)
 {}
 
+void RenderWindow::clear()
+{
+	m_handle.clear();
+}
+
 void RenderWindow::close()
 {
 	m_handle.close();
@@ -14,6 +19,11 @@ void RenderWindow::close()
 void RenderWindow::display()
 {
 	m_handle.display();
+}
+
+void RenderWindow::draw(const sf::Drawable& drawable, const sf::RenderStates& states)
+{
+	m_handle.draw(drawable, states);
 }
 
 bool RenderWindow::is_open() const

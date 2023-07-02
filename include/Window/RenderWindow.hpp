@@ -17,8 +17,10 @@ public:
 	RenderWindow(RenderWindow&&) = default;
 	~RenderWindow() = default;
 
+	void clear();
 	void close();
 	void display();
+	void draw(const sf::Drawable& drawable, const sf::RenderStates& states = sf::RenderStates::Default);
 	bool is_open() const;
 	std::optional<Input::Event> poll_event();
 
