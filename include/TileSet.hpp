@@ -6,13 +6,16 @@
 #include <unordered_map>
 
 #include <nlohmann/json.hpp>
+#include <SFML/Graphics/Texture.hpp>
+
+#include "Maths/Vector2.hpp"
 
 class TileSet
 {
 public:
 	struct Tile {
-		uint16_t top_left_x;
-		uint16_t top_left_y;
+		uint16_t texture_u_idx;
+		uint16_t texture_v_idx;
 		bool collide;
 	};
 
@@ -22,7 +25,9 @@ public:
 	TileSet(TileSet&&) = default;
 	~TileSet() = default;
 
-	bool get_tile_collision(uint8_t id) const;
+	bool get_collision(uint8_t id) const;
+	const sf::Texture& get_texture() const;
+	Vector2u get_texture_index(uint8_t id) const;
 	uint16_t get_tilesize() const;
 
 	static TileSet LoadFromJson(const nlohmann::json& data);
@@ -32,6 +37,7 @@ public:
 
 private:	
 	std::filesystem::path m_filepath;
+	sf::Texture m_texture;
 
 	uint16_t m_tilesize;
 	std::vector<Tile> m_tiles;
