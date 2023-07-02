@@ -1,7 +1,7 @@
 #include <iostream>
 
-#include "Tilemap.hpp"
-#include "Window/RenderWindow.hpp"
+#include "Graphics/Tilemap.hpp"
+#include "Graphics/RenderWindow.hpp"
 #include "Window/InputHandler.hpp"
 
 int main()

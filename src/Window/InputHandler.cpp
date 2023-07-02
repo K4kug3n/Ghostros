@@ -1,6 +1,6 @@
 #include "Window/InputHandler.hpp"
 
-#include "Window/RenderWindow.hpp"
+#include "Graphics/RenderWindow.hpp"
 
 InputHandler::InputHandler()
 {}

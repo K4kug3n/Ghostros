@@ -1,11 +1,11 @@
-#include "TileMap.hpp"
+#include "Graphics/TileMap.hpp"
 
 #include <fstream>
 #include <string>
 
 #include <nlohmann/json.hpp>
 
-#include "Window/RenderWindow.hpp"
+#include "Graphics/RenderWindow.hpp"
 
 using json = nlohmann::json;
 
