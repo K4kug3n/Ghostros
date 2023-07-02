@@ -19,6 +19,7 @@ public:
 
 using Vector2f = Vector2<float>;
 using Vector2i = Vector2<int>;
+using Vector2u = Vector2<unsigned>;
 
 #include "Vector2.inl"
 
