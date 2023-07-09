@@ -15,7 +15,7 @@ class RenderWindow
 {
 public:
 	RenderWindow() = delete;
-	RenderWindow(unsigned width, unsigned height, const std::string& title);
+	RenderWindow(unsigned width, unsigned height, std::string_view title);
 	RenderWindow(const RenderWindow&) = delete;
 	RenderWindow(RenderWindow&&) = default;
 	~RenderWindow() = default;
@@ -28,6 +28,7 @@ public:
 	bool is_open() const;
 	std::optional<Input::Event> poll_event();
 	void set_camera(const Camera& camera);
+	void set_title(std::string_view title);
 
 	RenderWindow& operator=(const RenderWindow&) = delete;
 	RenderWindow& operator=(RenderWindow&&) = default;

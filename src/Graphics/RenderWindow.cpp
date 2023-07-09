@@ -4,8 +4,8 @@
 
 #include "Graphics/Camera.hpp"
 
-RenderWindow::RenderWindow(unsigned width, unsigned height, const std::string& title)
-	: m_handle(sf::VideoMode{ width, height, 32 }, title)
+RenderWindow::RenderWindow(unsigned width, unsigned height, std::string_view title)
+	: m_handle(sf::VideoMode{ width, height, 32 }, title.data())
 {}
 
 void RenderWindow::clear()
@@ -53,4 +53,9 @@ std::optional<Input::Event> RenderWindow::poll_event()
 void RenderWindow::set_camera(const Camera& camera)
 {
 	m_handle.setView(camera.get_view());
+}
+
+void RenderWindow::set_title(std::string_view title)
+{
+	m_handle.setTitle(title.data());
 }
