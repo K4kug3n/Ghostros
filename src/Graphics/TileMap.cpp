@@ -54,6 +54,11 @@ uint8_t TileMap::get_cell_id(unsigned x, unsigned y) const
 	return m_indices[y * m_cols + x];
 }
 
+void TileMap::update(RenderWindow& window, InputHandler&, double)
+{
+	draw(window);
+}
+
 Vector2i TileMap::world_to_map(const Vector2i& position) const
 {
 	return Vector2i{ position.x / m_tile_set.get_tilesize(), position.y / m_tile_set.get_tilesize() };
