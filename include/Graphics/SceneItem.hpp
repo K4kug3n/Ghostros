@@ -9,8 +9,7 @@ class SceneItem
 public:
 	virtual ~SceneItem();
 
-	virtual void update(InputHandler& input_handler, double delta_time) = 0;
-	virtual void draw(RenderWindow& window) = 0;
+	virtual void update(RenderWindow& window, InputHandler& input_handler, double delta_time) = 0;
 };
 
 
