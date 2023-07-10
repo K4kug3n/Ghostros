@@ -5,9 +5,12 @@
 #include "Graphics/Camera.hpp"
 #include "Window/InputHandler.hpp"
 
+#include "Graphics/Scene.hpp"
+
 int main()
 {
-	TileMap tilemap = TileMap::LoadFromFile("stage_1.json");
+	Scene game_scene;
+	game_scene.add_item<TileMap>(TileMap::LoadFromFile("stage_1.json"));
 
 	RenderWindow window{ 640, 480, "NotSureYet" };
 
@@ -58,7 +61,7 @@ int main()
 		}
 
 		window.clear();
-		tilemap.draw(window);
+		game_scene.update(window, input_handler);
 		window.display();
 	}
 
