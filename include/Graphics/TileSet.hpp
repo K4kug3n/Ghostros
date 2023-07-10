@@ -1,5 +1,5 @@
-#ifndef TILESET_HPP
-#define TILESET_HPP
+#ifndef GRAPHICS_TILESET_HPP
+#define GRAPHICS_TILESET_HPP
 
 #include <filesystem>
 #include <vector>

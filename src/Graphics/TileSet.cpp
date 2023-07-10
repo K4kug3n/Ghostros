@@ -8,7 +8,7 @@ TileSet::TileSet(std::filesystem::path filepath, uint16_t tilesize, std::vector<
 {
 	if (!m_texture.loadFromFile(m_filepath.generic_string()))
 	{
-		std::runtime_error("Can't load Texture from file " + m_filepath.generic_string());
+		throw std::runtime_error("Can't load Texture from file " + m_filepath.generic_string());
 	}
 }
 
