@@ -4,9 +4,9 @@
 #include <entt/entity/registry.hpp>
 
 #include "Graphics/SceneItem.hpp"
+#include "ECS/System.hpp"
 
 class EntityHandler;
-class System;
 
 class World : public SceneItem
 {
