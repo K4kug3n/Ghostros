@@ -7,10 +7,20 @@
 
 #include "Graphics/Scene.hpp"
 
+#include "ECS/World.hpp"
+#include "ECS/EntityHandler.hpp"
+#include "ECS/Components/Sprite.hpp"
+
 int main()
 {
 	Scene game_scene;
 	game_scene.add_item<TileMap>(TileMap::LoadFromFile("stage_1.json"));
+
+	World& world = game_scene.add_item<World>();
+	EntityHandler player = world.create();
+
+	Texture texture{ "sprites/ghost-1.png" };
+	Sprite& sprite = player.add_compoment<Sprite>(std::move(texture));
 
 	RenderWindow window{ 640, 480, "NotSureYet" };
 
