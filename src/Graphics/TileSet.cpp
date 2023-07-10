@@ -1,15 +1,10 @@
 #include "Graphics/TileSet.hpp"
 
-TileSet::TileSet(std::filesystem::path filepath, uint16_t tilesize, std::vector<Tile> tiles)
-	: m_filepath(std::move(filepath))
-	, m_texture()
+TileSet::TileSet(const std::filesystem::path& filepath, uint16_t tilesize, std::vector<Tile> tiles)
+	: m_texture(filepath)
 	, m_tilesize(tilesize)
 	, m_tiles(std::move(tiles))
 {
-	if (!m_texture.loadFromFile(m_filepath.generic_string()))
-	{
-		throw std::runtime_error("Can't load Texture from file " + m_filepath.generic_string());
-	}
 }
 
 bool TileSet::get_collision(uint8_t id) const
@@ -17,7 +12,7 @@ bool TileSet::get_collision(uint8_t id) const
 	return m_tiles[id].collide;
 }
 
-const sf::Texture& TileSet::get_texture() const
+const Texture& TileSet::get_texture() const
 {
 	return m_texture;
 }

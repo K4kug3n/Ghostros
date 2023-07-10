@@ -46,7 +46,7 @@ TileMap::TileMap(unsigned cols, unsigned rows, std::vector<uint8_t> map, TileSet
 
 void TileMap::draw(RenderWindow& window)
 {
-	window.draw(m_vertices, sf::RenderStates{ &m_tile_set.get_texture() });
+	window.draw(m_vertices, sf::RenderStates{ &m_tile_set.get_texture().get_handle() });
 }
 
 uint8_t TileMap::get_cell_id(unsigned x, unsigned y) const
