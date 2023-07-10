@@ -6,6 +6,7 @@
 #include "Graphics/SceneItem.hpp"
 
 class EntityHandler;
+class System;
 
 class World : public SceneItem
 {
@@ -15,6 +16,8 @@ public:
 	World(World&&) = default;
 	~World() = default;
 
+	template<typename T, typename... Args>
+	void add_system(Args... args);
 	EntityHandler create();
 	void update(RenderWindow& window, InputHandler& input_handler, double delta_time) override;
 
@@ -26,6 +29,9 @@ private:
 	entt::registry& get_registry();
 
 	entt::registry m_registry;
+	std::vector<std::unique_ptr<System>> m_systems;
 };
+
+#include "ECS/World.inl"
 
 #endif
