@@ -1,5 +1,5 @@
-#ifndef WINODW_RENDERWINDOW_HPP
-#define WINODW_RENDERWINDOW_HPP
+#ifndef GRAPHICS_RENDERWINDOW_HPP
+#define GRAPHICS_RENDERWINDOW_HPP
 
 #include <string>
 #include <optional>
