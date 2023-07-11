@@ -20,6 +20,8 @@ public:
 	void add_system(Args... args);
 	EntityHandler create();
 	void update(RenderWindow& window, InputHandler& input_handler, double delta_time) override;
+	template<typename... Types>
+	entt::view< entt::get_t<Types...>> view();
 
 	World& operator=(const World&) = delete;
 	World& operator=(World&&) = default;
