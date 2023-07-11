@@ -17,7 +17,7 @@ public:
 
 	System& operator=(const System&) = delete;
 	System& operator=(System&&) = default;
-private:
+protected:
 	World& m_world;
 };
 
