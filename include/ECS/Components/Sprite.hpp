@@ -5,6 +5,9 @@
 
 #include "Graphics/Texture.hpp"
 
+template<typename T> class Vector3;
+using Vector3f = Vector3<float>;
+
 class Sprite
 {
 public:
@@ -15,6 +18,7 @@ public:
 	~Sprite() = default;
 
 	const sf::Sprite& get_handle() const;
+	void set_position(const Vector3f& position);
 
 	Sprite& operator=(Sprite&&) = default;
 	Sprite& operator=(const Sprite&) = delete;
