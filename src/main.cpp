@@ -6,10 +6,12 @@
 #include "Window/InputHandler.hpp"
 
 #include "Graphics/Scene.hpp"
+#include "Graphics/Systems/RenderSystem.hpp"
 
 #include "ECS/World.hpp"
 #include "ECS/EntityHandler.hpp"
 #include "ECS/Components/Sprite.hpp"
+#include "ECS/Components/Node.hpp"
 
 int main()
 {
@@ -17,10 +19,12 @@ int main()
 	game_scene.add_item<TileMap>(TileMap::LoadFromFile("stage_1.json"));
 
 	World& world = game_scene.add_item<World>();
+	world.add_system<RenderSystem>();
 	EntityHandler player = world.create();
 
 	Texture texture{ "sprites/ghost-1.png" };
-	Sprite& sprite = player.add_compoment<Sprite>(std::move(texture));
+	player.add_compoment<Sprite>(std::move(texture));
+	player.add_compoment<Node>(Vector3f{ 10.f, 0.f, 0.f });
 
 	RenderWindow window{ 640, 480, "NotSureYet" };
 
