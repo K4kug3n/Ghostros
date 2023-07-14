@@ -15,6 +15,8 @@ public:
 	~Texture() = default;
 
 	const sf::Texture& get_handle() const;
+	unsigned get_height() const;
+	unsigned get_width() const;
 
 	Texture& operator=(const Texture&) = delete;
 	Texture& operator=(Texture&&) = default;
