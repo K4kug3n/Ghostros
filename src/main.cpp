@@ -7,10 +7,10 @@
 
 #include "Graphics/Scene.hpp"
 #include "Graphics/Systems/RenderSystem.hpp"
+#include "Graphics/Components/AnimatedSprite.hpp"
 
 #include "ECS/World.hpp"
 #include "ECS/EntityHandler.hpp"
-#include "ECS/Components/Sprite.hpp"
 #include "ECS/Components/Node.hpp"
 
 int main()
@@ -23,7 +23,10 @@ int main()
 	EntityHandler player = world.create();
 
 	Texture texture{ "sprites/ghost-1.png" };
-	player.add_compoment<Sprite>(std::move(texture));
+	AnimatedSprite& ghost_sprite = player.add_compoment<AnimatedSprite>();
+	ghost_sprite.add_animation("idle", std::move(texture), 1, 3, 3.f);
+	ghost_sprite.play("idle");
+
 	player.add_compoment<Node>(Vector3f{ 10.f, 0.f, 0.f });
 
 	RenderWindow window{ 640, 480, "NotSureYet" };
