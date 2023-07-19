@@ -11,16 +11,46 @@ public:
 	Vector2(Vector2&&) = default;
 	~Vector2() = default;
 
-	T x, y;
+	Vector2& operator+=(const Vector2& other);
+	Vector2& operator-=(const Vector2& other);
+	Vector2& operator*=(const Vector2& other);
 
 	Vector2& operator=(const Vector2&) = default;
 	Vector2& operator=(Vector2&&) = default;
+
+	T x, y;
 };
 
 using Vector2f = Vector2<float>;
 using Vector2i = Vector2<int>;
 using Vector2u = Vector2<unsigned>;
 
-#include "Vector2.inl"
+template <typename T>
+Vector2<T> operator+(const Vector2<T>& lhs, const Vector2<T>& rhs);
+
+template <typename T>
+Vector2<T> operator-(const Vector2<T>& lhs, const Vector2<T>& rhs);
+
+template <typename T>
+Vector2<T> operator*(const Vector2<T>& lhs, const Vector2<T>& rhs);
+
+template <typename T>
+Vector2<T> operator*(const Vector2<T>& lhs, T coeff);
+
+template <typename T>
+Vector2<T> operator*(T coeff, const Vector2<T>& rhs);
+
+template <typename T>
+Vector2<T> operator/(const Vector2<T>& lhs, const Vector2<T>& rhs);
+
+template <typename T>
+Vector2<T> operator/(const Vector2<T>& lhs, T coeff);
+
+template <typename T>
+Vector2<T> operator/(T coeff, const Vector2<T>& rhs);
+
+#include "Maths/Vector2.inl"
 
 #endif
+
+
