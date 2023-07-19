@@ -14,7 +14,7 @@ public:
 	~EntityHandler() = default;
 
 	template<typename T, typename... Args>
-	T& add_compoment(Args... args);
+	T& add_component(Args... args);
 
 	EntityHandler& operator=(const EntityHandler&) = delete;
 	EntityHandler& operator=(EntityHandler&&) = default;
