@@ -1,13 +1,13 @@
 #include <iostream>
 
-#include "Graphics/Tilemap.hpp"
-#include "Graphics/RenderWindow.hpp"
-#include "Graphics/Camera.hpp"
 #include "Window/InputHandler.hpp"
 
+#include "Graphics/RenderWindow.hpp"
+#include "Graphics/Camera.hpp"
 #include "Graphics/Scene.hpp"
 #include "Graphics/Systems/RenderSystem.hpp"
 #include "Graphics/Components/AnimatedSprite.hpp"
+#include "Graphics/Components/Tilemap.hpp"
 
 #include "ECS/World.hpp"
 #include "ECS/EntityHandler.hpp"
@@ -19,7 +19,6 @@
 int main()
 {
 	Scene game_scene;
-	game_scene.add_item<TileMap>(TileMap::LoadFromFile("stage_1.json"));
 
 	World& world = game_scene.add_item<World>();
 	PhysicsSpace& space = world.add_system<PhysicsSpace>();
@@ -29,13 +28,17 @@ int main()
 	EntityHandler player = world.create();
 
 	Texture texture{ "sprites/ghost-1.png" };
-	AnimatedSprite& ghost_sprite = player.add_compoment<AnimatedSprite>();
+	AnimatedSprite& ghost_sprite = player.add_component<AnimatedSprite>();
 	ghost_sprite.add_animation("idle", std::move(texture), 1, 3, 3.f);
 	ghost_sprite.play("idle");
 
-	player.add_compoment<Node>(Vector3f{ 10.f, 0.f, 0.f });
-	RigidBody& player_body = player.add_compoment<RigidBody>(1.f);
+	player.add_component<Node>(Vector3f{ 10.f, 0.f, 0.f });
+	RigidBody& player_body = player.add_component<RigidBody>(1.f);
 	player_body.force.x += 10.f;
+
+	EntityHandler tilemap = world.create();
+	tilemap.add_component<TileMap>(TileMap::LoadFromFile("stage_1.json"));
+	tilemap.add_component<Node>(Vector3f{ 0.f, 0.f, 0.f });
 
 	RenderWindow window{ 640, 480, "NotSureYet" };
 
