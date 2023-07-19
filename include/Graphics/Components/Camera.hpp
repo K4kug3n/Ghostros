@@ -5,7 +5,6 @@
 
 template<typename T> class Vector2;
 using Vector2u = Vector2<unsigned>;
-using Vector2f = Vector2<float>;
 
 class Camera
 {
@@ -18,7 +17,6 @@ public:
 	~Camera() = default;
 
 	const sf::View& get_view() const;
-	void move(const Vector2f& movement);
 	void set_size(const Vector2u& size);
 
 	Camera& operator=(const Camera&) = delete;

@@ -1,6 +1,4 @@
-#include "Graphics/Camera.hpp"
-
-#include <cassert>
+#include "Graphics/Components/Camera.hpp"
 
 #include "Maths/Vector2.hpp"
 
@@ -17,12 +15,7 @@ const sf::View& Camera::get_view() const
 	return m_view;
 }
 
-void Camera::move(const Vector2f& movement)
-{
-	m_view.move(movement.x, movement.y);
-}
-
 void Camera::set_size(const Vector2u& size)
 {
-	m_view.setSize(size.x, size.y);
+	m_view.setSize(static_cast<float>(size.x), static_cast<float>(size.y));
 }

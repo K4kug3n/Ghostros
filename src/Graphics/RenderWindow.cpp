@@ -2,7 +2,7 @@
 
 #include <SFML/Window/Event.hpp>
 
-#include "Graphics/Camera.hpp"
+#include "Graphics/Components/Camera.hpp"
 
 RenderWindow::RenderWindow(unsigned width, unsigned height, std::string_view title)
 	: m_handle(sf::VideoMode{ width, height, 32 }, title.data())

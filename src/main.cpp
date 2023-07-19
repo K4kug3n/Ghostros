@@ -3,9 +3,9 @@
 #include "Window/InputHandler.hpp"
 
 #include "Graphics/RenderWindow.hpp"
-#include "Graphics/Camera.hpp"
 #include "Graphics/Scene.hpp"
 #include "Graphics/Systems/RenderSystem.hpp"
+#include "Graphics/Components/Camera.hpp"
 #include "Graphics/Components/AnimatedSprite.hpp"
 #include "Graphics/Components/Tilemap.hpp"
 
@@ -69,22 +69,22 @@ int main()
 		}
 		if (input_handler.is_active("up"))
 		{
-			camera.move({ 0.f, -5.f });
+			//camera.move({ 0.f, -5.f });
 			window.set_camera(camera);
 		}
 		if (input_handler.is_active("down"))
 		{
-			camera.move({ 0.f, 5.f });
+			//camera.move({ 0.f, 5.f });
 			window.set_camera(camera);
 		}
 		if (input_handler.is_active("left"))
 		{
-			camera.move({ -5.f, 0.f });
+			//camera.move({ -5.f, 0.f });
 			window.set_camera(camera);
 		}
 		if (input_handler.is_active("right"))
 		{
-			camera.move({ 5.f, 0.f });
+			//camera.move({ 5.f, 0.f });
 			window.set_camera(camera);
 		}
 
