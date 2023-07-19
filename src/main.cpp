@@ -13,12 +13,18 @@
 #include "ECS/EntityHandler.hpp"
 #include "ECS/Components/Node.hpp"
 
+#include "Physics/Systems/PhysicsSpace.hpp"
+#include "Physics/Components/RigidBody.hpp"
+
 int main()
 {
 	Scene game_scene;
 	game_scene.add_item<TileMap>(TileMap::LoadFromFile("stage_1.json"));
 
 	World& world = game_scene.add_item<World>();
+	PhysicsSpace& space = world.add_system<PhysicsSpace>();
+	space.set_gravity({ 0.f, 9.81f });
+
 	world.add_system<RenderSystem>();
 	EntityHandler player = world.create();
 
@@ -28,6 +34,8 @@ int main()
 	ghost_sprite.play("idle");
 
 	player.add_compoment<Node>(Vector3f{ 10.f, 0.f, 0.f });
+	RigidBody& player_body = player.add_compoment<RigidBody>(1.f);
+	player_body.force.x += 10.f;
 
 	RenderWindow window{ 640, 480, "NotSureYet" };
 
