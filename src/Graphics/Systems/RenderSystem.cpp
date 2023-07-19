@@ -27,7 +27,7 @@ void RenderSystem::update(RenderWindow& window, InputHandler&, double delta_t)
 	sprite_view.each(
 		[&window](const Node& node, Sprite& sprite)
 		{
-			sprite.set_position(node.position);
+			sprite.set_position(node.get_position());
 			window.draw(sprite.get_handle());
 		}
 	);
@@ -38,7 +38,7 @@ void RenderSystem::update(RenderWindow& window, InputHandler&, double delta_t)
 		{
 			animated_sprite.update(delta_t);
 			sf::Sprite& sprite = animated_sprite.get_frame();
-			sprite.setPosition({ node.position.x, node.position.y });
+			sprite.setPosition({ node.get_position().x, node.get_position().y});
 			window.draw(sprite);
 		}
 	);

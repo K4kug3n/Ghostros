@@ -30,8 +30,8 @@ void PhysicsSpace::step(float dt)
 		{
 			body.force += body.mass * m_gravity;
 			body.velocity += (body.force / body.mass) * dt;
-			Vector2f position = body.velocity * dt;
-			node.position += Vector3f{ position.x, position.y, 0.f };
+			Vector2f movement = body.velocity * dt;
+			node.move({ movement.x, movement.y, 0.f });
 
 			body.force = Vector2f{ 0.f, 0.f };
 		}

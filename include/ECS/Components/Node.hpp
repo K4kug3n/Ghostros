@@ -12,10 +12,15 @@ public:
 	Node(const Node&) = delete;
 	~Node() = default;
 
+	const Vector3f& get_position() const;
+	void move(const Vector3f& movement);
+	void set_position(Vector3f position);
+
 	Node& operator=(Node&&) = default;
 	Node& operator=(const Node&) = delete;
 
-	Vector3f position;
+private: 
+	Vector3f m_position;
 };
 
 #endif
