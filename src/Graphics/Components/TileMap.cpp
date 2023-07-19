@@ -24,7 +24,7 @@ TileMap::TileMap(unsigned cols, unsigned rows, std::vector<uint8_t> map, TileSet
 			Vector2u texture_idx = m_tile_set.get_texture_index(tile_id);
 
 			sf::Vertex* triangles = &m_vertices[(i + j * cols) * 6];
-			uint16_t tilesize = m_tile_set.get_tilesize();
+			uint16_t tilesize = m_tile_set.get_tile_size();
 
 			triangles[0].position = sf::Vector2f{ static_cast<float>(i * tilesize), static_cast<float>(j * tilesize) };
 			triangles[1].position = sf::Vector2f{ static_cast<float>((i + 1) * tilesize), static_cast<float>(j * tilesize) };
@@ -33,7 +33,6 @@ TileMap::TileMap(unsigned cols, unsigned rows, std::vector<uint8_t> map, TileSet
 			triangles[4].position = sf::Vector2f{ static_cast<float>((i + 1) * tilesize), static_cast<float>(j * tilesize) };
 			triangles[5].position = sf::Vector2f{ static_cast<float>((i + 1) * tilesize), static_cast<float>((j + 1) * tilesize) };
 
-			// on définit ses 6 coordonnées de textexture_idx.xre correspondantes
 			triangles[0].texCoords = sf::Vector2f{ static_cast<float>(texture_idx.x * tilesize), static_cast<float>(texture_idx.x * tilesize) };
 			triangles[1].texCoords = sf::Vector2f{ static_cast<float>((texture_idx.x + 1) * tilesize), static_cast<float>(texture_idx.x * tilesize) };
 			triangles[2].texCoords = sf::Vector2f{ static_cast<float>(texture_idx.x * tilesize), static_cast<float>((texture_idx.x + 1) * tilesize) };
@@ -56,7 +55,7 @@ uint8_t TileMap::get_cell_id(unsigned x, unsigned y) const
 
 Vector2i TileMap::world_to_map(const Vector2i& position) const
 {
-	return Vector2i{ position.x / m_tile_set.get_tilesize(), position.y / m_tile_set.get_tilesize() };
+	return Vector2i{ position.x / m_tile_set.get_tile_size(), position.y / m_tile_set.get_tile_size() };
 }
 
 TileMap TileMap::LoadFromFile(const std::filesystem::path& filepath)
