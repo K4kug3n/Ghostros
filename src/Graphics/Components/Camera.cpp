@@ -10,6 +10,11 @@ Camera::Camera(unsigned top_left_x, unsigned top_left_y, unsigned bottom_right_x
 	: m_view(sf::FloatRect{ static_cast<float>(top_left_x), static_cast<float>(top_left_y), static_cast<float>(bottom_right_x), static_cast<float>(bottom_right_y) })
 {}
 
+sf::View& Camera::get_view()
+{
+	return m_view;
+}
+
 const sf::View& Camera::get_view() const
 {
 	return m_view;

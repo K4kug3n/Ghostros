@@ -16,6 +16,7 @@ public:
 	Camera(Camera&&) = default;
 	~Camera() = default;
 
+	sf::View& get_view();
 	const sf::View& get_view() const;
 	void set_size(const Vector2u& size);
 

@@ -3,6 +3,7 @@
 #include "Graphics/RenderWindow.hpp"
 #include "Graphics/Components/AnimatedSprite.hpp"
 #include "Graphics/Components/TileMap.hpp"
+#include "Graphics/Components/Camera.hpp"
 
 #include "ECS/Components/Node.hpp"
 #include "ECS/Components/Sprite.hpp"
@@ -15,9 +16,19 @@ RenderSystem::RenderSystem(World& world)
 
 void RenderSystem::update(RenderWindow& window, InputHandler&, double delta_t)
 {
+	auto camera_view = m_world.view<const Node, Camera>();
+	camera_view.each(
+		[&window](const Node& node, Camera& camera)
+		{
+			sf::View& view = camera.get_view();
+			view.setCenter(node.get_position().x, node.get_position().y);
+			window.set_camera(camera);
+		}
+	);
+
 	auto tilemap_view = m_world.view<const Node, TileMap>();
 	tilemap_view.each(
-		[&window](const Node& node, TileMap& tilemap)
+		[&window](const Node&, TileMap& tilemap)
 		{
 			tilemap.draw(window);
 		}

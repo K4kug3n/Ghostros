@@ -41,6 +41,7 @@ int main()
 	tilemap.add_component<Node>(Vector3f{ 0.f, 0.f, 0.f });
 
 	RenderWindow window{ 640, 480, "NotSureYet" };
+	Camera& camera = player.add_component<Camera>(0, 0, window.get_size().x, window.get_size().y);
 
 	InputHandler input_handler;
 	input_handler.register_action("quit", Action{ Input::Window::Closed });
@@ -50,9 +51,6 @@ int main()
 	input_handler.register_action("left", Action{ Input::Keyboard::Q });
 	input_handler.register_action("up", Action{ Input::Keyboard::Z });
 	input_handler.register_action("down", Action{ Input::Keyboard::S });
-
-	Camera camera{ 0, 0, window.get_size().x, window.get_size().y };
-	window.set_camera(camera);
 
 	while (window.is_open())
 	{
@@ -65,27 +63,22 @@ int main()
 		if (input_handler.is_active("resize"))
 		{
 			camera.set_size(window.get_size());
-			window.set_camera(camera);
 		}
 		if (input_handler.is_active("up"))
 		{
 			//camera.move({ 0.f, -5.f });
-			window.set_camera(camera);
 		}
 		if (input_handler.is_active("down"))
 		{
 			//camera.move({ 0.f, 5.f });
-			window.set_camera(camera);
 		}
 		if (input_handler.is_active("left"))
 		{
 			//camera.move({ -5.f, 0.f });
-			window.set_camera(camera);
 		}
 		if (input_handler.is_active("right"))
 		{
 			//camera.move({ 5.f, 0.f });
-			window.set_camera(camera);
 		}
 
 		window.clear();
