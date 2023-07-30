@@ -6,6 +6,21 @@ inline Vector3<T>::Vector3(T x, T y, T z)
 {}
 
 template<typename T>
+inline T Vector3<T>::length() const
+{
+	return static_cast<T>(std::sqrt(x * x + y * y + z * z));
+}
+
+template<typename T>
+inline void Vector3<T>::normalize()
+{
+	const T l = length();
+	x /= l;
+	y /= l;
+	z /= l;
+}
+
+template<typename T>
 inline Vector3<T>& Vector3<T>::operator+=(const Vector3<T>& other)
 {
 	*this = *this + other;

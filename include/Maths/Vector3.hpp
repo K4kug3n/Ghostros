@@ -11,6 +11,9 @@ public:
 	Vector3(Vector3&&) = default;
 	~Vector3() = default;
 
+	T length() const;
+	void normalize();
+
 	Vector3& operator+=(const Vector3& other);
 	Vector3& operator-=(const Vector3& other);
 

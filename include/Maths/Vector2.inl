@@ -1,8 +1,26 @@
+#include "Vector2.hpp"
+
+#include <cmath>
+
 template<typename T>
 inline Vector2<T>::Vector2(T x, T y)
 	: x(x)
 	, y(y)
 {}
+
+template<typename T>
+inline T Vector2<T>::length() const
+{
+	return static_cast<T>(std::sqrt(x * x + y * y));
+}
+
+template<typename T>
+inline void Vector2<T>::normalize()
+{
+	const T l = length();
+	x /= l;
+	y /= l;
+}
 
 template<typename T>
 inline Vector2<T>& Vector2<T>::operator+=(const Vector2<T>& other)
