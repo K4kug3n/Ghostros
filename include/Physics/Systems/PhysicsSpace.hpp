@@ -5,6 +5,10 @@
 #include "Maths/Vector2.hpp"
 
 class World;
+class TileMap;
+class RigidBody;
+template<typename T> class Vector3;
+using Vector3f = Vector3<float>;
 
 class PhysicsSpace : public System
 {
@@ -22,6 +26,8 @@ public:
 	PhysicsSpace& operator=(const PhysicsSpace&) = delete;
 
 private:
+	void resolve_tilemap_collision(Vector3f& new_pos, const Vector3f& old_pos, RigidBody& body, const TileMap& tilemap);
+
 	Vector2f m_gravity;
 };
 
