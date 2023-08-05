@@ -48,14 +48,29 @@ void TileMap::draw(RenderWindow& window)
 	window.draw(m_vertices, sf::RenderStates{ &m_tile_set.get_texture().get_handle() });
 }
 
+AABB TileMap::get_AABB(unsigned x, unsigned y) const
+{
+	const uint16_t tile_size = m_tile_set.get_tile_size();
+	const uint16_t half = tile_size / 2;
+	return AABB{ 
+		Vector2f{ static_cast<float>(x * tile_size + half), static_cast<float>(y * tile_size + half) },
+		Vector2f{ static_cast<float>(half), static_cast<float>(half) }
+	};
+}
+
 uint8_t TileMap::get_cell_id(unsigned x, unsigned y) const
 {
 	return m_indices[y * m_cols + x];
 }
 
-Vector2i TileMap::world_to_map(const Vector2i& position) const
+const TileSet& TileMap::get_tile_set() const
 {
-	return Vector2i{ position.x / m_tile_set.get_tile_size(), position.y / m_tile_set.get_tile_size() };
+	return m_tile_set;
+}
+
+Vector2i TileMap::world_to_map(const Vector2f& position) const
+{
+	return Vector2i{ static_cast<int>(position.x / m_tile_set.get_tile_size()), static_cast<int>(position.y / m_tile_set.get_tile_size()) };
 }
 
 TileMap TileMap::LoadFromFile(const std::filesystem::path& filepath)

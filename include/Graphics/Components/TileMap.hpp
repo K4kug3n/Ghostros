@@ -8,6 +8,7 @@
 
 #include "Graphics/TileSet.hpp"
 #include "Maths/Vector2.hpp"
+#include "Physics/AABB.hpp"
 
 class RenderWindow;
 
@@ -21,8 +22,10 @@ public:
 	~TileMap() = default;
 
 	void draw(RenderWindow& window);
+	AABB get_AABB(unsigned x, unsigned y) const;
 	uint8_t get_cell_id(unsigned x, unsigned y) const;
-	Vector2i world_to_map(const Vector2i& position) const;
+	const TileSet& get_tile_set() const;
+	Vector2i world_to_map(const Vector2f& position) const;
 
 	static TileMap LoadFromFile(const std::filesystem::path& filepath);
 

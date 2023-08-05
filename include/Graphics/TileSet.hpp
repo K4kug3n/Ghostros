@@ -19,7 +19,7 @@ public:
 	TileSet(TileSet&&) = default;
 	~TileSet() = default;
 
-	TileProperties get_properties(uint8_t id) const;
+	const TileProperties& get_properties(uint8_t id) const;
 	const Texture& get_texture() const;
 	Vector2u get_texture_index(uint8_t id) const;
 	uint16_t get_tile_size() const;

@@ -7,7 +7,7 @@ TileSet::TileSet(const std::filesystem::path& filepath, uint16_t tilesize, std::
 {
 }
 
-TileProperties TileSet::get_properties(uint8_t id) const
+const TileProperties& TileSet::get_properties(uint8_t id) const
 {
 	return m_tiles[id].properties;
 }
