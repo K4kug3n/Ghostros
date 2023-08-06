@@ -22,7 +22,7 @@ int main()
 
 	World& world = game_scene.add_item<World>();
 	PhysicsSpace& space = world.add_system<PhysicsSpace>();
-	space.set_gravity({ 0.f, 9.81f });
+	space.set_gravity({ 0.f, 98.1f });
 
 	world.add_system<RenderSystem>();
 	EntityHandler player = world.create();
@@ -32,9 +32,8 @@ int main()
 	ghost_sprite.add_animation("idle", std::move(texture), 1, 3, 3.f);
 	ghost_sprite.play("idle");
 
-	player.add_component<Node>(Vector3f{ 10.f, 0.f, 0.f });
-	RigidBody& player_body = player.add_component<RigidBody>(1.f);
-	player_body.force.x += 10.f;
+	player.add_component<Node>(Vector3f{ 96.f, 96.f, 0.f });
+	RigidBody& player_body = player.add_component<RigidBody>(1.f, Vector2f{ 27.f, 29.f });
 
 	EntityHandler tilemap = world.create();
 	tilemap.add_component<TileMap>(TileMap::LoadFromFile("stage_1.json"));
@@ -66,19 +65,19 @@ int main()
 		}
 		if (input_handler.is_active("up"))
 		{
-			//camera.move({ 0.f, -5.f });
+			player_body.jump = true;
 		}
 		if (input_handler.is_active("down"))
 		{
-			//camera.move({ 0.f, 5.f });
+			player_body.velocity.y += 10.f;
 		}
 		if (input_handler.is_active("left"))
 		{
-			//camera.move({ -5.f, 0.f });
+			player_body.velocity.x -= 10.f;
 		}
 		if (input_handler.is_active("right"))
 		{
-			//camera.move({ 5.f, 0.f });
+			player_body.velocity.x += 10.f;
 		}
 
 		window.clear();
