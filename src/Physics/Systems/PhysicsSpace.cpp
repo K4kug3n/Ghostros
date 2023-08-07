@@ -3,9 +3,11 @@
 #include <utility>
 
 #include "ECS/World.hpp"
+#include "ECS/EntityHandler.hpp"
 #include "ECS/Components/Node.hpp"
 
 #include "Physics/Components/RigidBody.hpp"
+#include "Physics/Components/Collision.hpp"
 
 #include "Graphics/Components/TileMap.hpp"
 
@@ -30,7 +32,7 @@ void PhysicsSpace::step(float dt)
 	auto body_view = m_world.view<Node, RigidBody>();
 	auto tilemap_view = m_world.view<TileMap>();
 
-	for (auto [_, node, body] : body_view.each())
+	for (auto [_, node, body] : body_view.each()) // Move & Map collision
 	{
 		if (body.jump && body.on_ground)
 		{
@@ -44,9 +46,9 @@ void PhysicsSpace::step(float dt)
 		}
 
 		body.velocity.x = std::min(body.velocity.x, 100.f);
-		
+
 		body.velocity += m_gravity * dt;
-		
+
 		Vector2f movement = body.velocity * dt;
 		Vector3f new_pos = Vector3f{ movement.x, movement.y, 0.f } + node.get_position();
 
@@ -56,6 +58,46 @@ void PhysicsSpace::step(float dt)
 		}
 
 		node.set_position(new_pos);
+	}
+
+	for (auto [id_a, node_a, body_a] : body_view.each()) // Entity collision
+	{
+		for (auto [id_b, node_b, body_b] : body_view.each())
+		{
+			if (id_a == id_b)
+			{
+				continue;
+			}
+
+			AABB aabb_a{ { node_a.get_position().x + body_a.size.x / 2.f, node_a.get_position().y + body_a.size.y / 2.f}, body_a.size / 2.f };
+			AABB aabb_b{ { node_b.get_position().x + body_b.size.x / 2.f, node_b.get_position().y + body_b.size.y / 2.f}, body_b.size / 2.f };
+
+			if (aabb_a.is_intersecting(aabb_b))
+			{
+				EntityHandler handler_a{ m_world, id_a };
+				EntityHandler handler_b{ m_world, id_b };
+
+				handler_a.add_or_replace_component<Collision>(Collision{ handler_b, { node_a.get_position().x, node_a.get_position().y } });
+				handler_b.add_or_replace_component<Collision>(Collision{ handler_a, { node_b.get_position().x, node_b.get_position().y } });
+			}
+		}
+	}
+
+	auto collision_view = m_world.view<Node, RigidBody, Collision>();
+	for (auto [id_a, node_a, body_a, collision] : collision_view.each())
+	{
+		AABB aabb_a{ { node_a.get_position().x + body_a.size.x / 2.f, node_a.get_position().y + body_a.size.y / 2.f}, body_a.size / 2.f };
+		const EntityHandler& id_b = collision.get_collider();
+
+		const Node& node_b = id_b.get<Node>();
+		const RigidBody& body_b = id_b.get<RigidBody>();
+
+		AABB aabb_b{ { node_b.get_position().x + body_b.size.x / 2.f, node_b.get_position().y + body_b.size.y / 2.f}, body_b.size / 2.f };
+		if (!aabb_a.is_intersecting(aabb_b))
+		{
+			EntityHandler handler_a{ m_world, id_a };
+			handler_a.remove<Collision>();
+		}
 	}
 }
 
