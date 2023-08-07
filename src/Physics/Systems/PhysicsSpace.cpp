@@ -56,7 +56,7 @@ void PhysicsSpace::step(float dt)
 		{
 			resolve_tilemap_collision(new_pos, node.get_position(), body, tilemap);
 		}
-
+		 
 		node.set_position(new_pos);
 	}
 
@@ -69,16 +69,16 @@ void PhysicsSpace::step(float dt)
 				continue;
 			}
 
-			AABB aabb_a{ { node_a.get_position().x + body_a.size.x / 2.f, node_a.get_position().y + body_a.size.y / 2.f}, body_a.size / 2.f };
-			AABB aabb_b{ { node_b.get_position().x + body_b.size.x / 2.f, node_b.get_position().y + body_b.size.y / 2.f}, body_b.size / 2.f };
+			AABB aabb_a{ node_a.get_position().xy() + body_a.size / 2.f, body_a.size / 2.f };
+			AABB aabb_b{ node_b.get_position().xy() + body_b.size / 2.f, body_b.size / 2.f };
 
 			if (aabb_a.is_intersecting(aabb_b))
 			{
 				EntityHandler handler_a{ m_world, id_a };
 				EntityHandler handler_b{ m_world, id_b };
 
-				handler_a.add_or_replace_component<Collision>(Collision{ handler_b, { node_a.get_position().x, node_a.get_position().y } });
-				handler_b.add_or_replace_component<Collision>(Collision{ handler_a, { node_b.get_position().x, node_b.get_position().y } });
+				handler_a.add_or_replace_component<Collision>(Collision{ handler_b, node_a.get_position().xy() });
+				handler_b.add_or_replace_component<Collision>(Collision{ handler_a, node_b.get_position().xy() });
 			}
 		}
 	}
@@ -86,13 +86,13 @@ void PhysicsSpace::step(float dt)
 	auto collision_view = m_world.view<Node, RigidBody, Collision>();
 	for (auto [id_a, node_a, body_a, collision] : collision_view.each())
 	{
-		AABB aabb_a{ { node_a.get_position().x + body_a.size.x / 2.f, node_a.get_position().y + body_a.size.y / 2.f}, body_a.size / 2.f };
+		AABB aabb_a{ node_a.get_position().xy() + body_a.size / 2.f, body_a.size / 2.f };
 		const EntityHandler& id_b = collision.get_collider();
 
 		const Node& node_b = id_b.get<Node>();
 		const RigidBody& body_b = id_b.get<RigidBody>();
 
-		AABB aabb_b{ { node_b.get_position().x + body_b.size.x / 2.f, node_b.get_position().y + body_b.size.y / 2.f}, body_b.size / 2.f };
+		AABB aabb_b{ node_b.get_position().xy() + body_b.size / 2.f, body_b.size / 2.f };
 		if (!aabb_a.is_intersecting(aabb_b))
 		{
 			EntityHandler handler_a{ m_world, id_a };
@@ -103,10 +103,10 @@ void PhysicsSpace::step(float dt)
 
 void PhysicsSpace::resolve_tilemap_collision(Vector3f& new_pos, const Vector3f& old_pos, RigidBody& body, const TileMap& tilemap)
 {
-	const AABB body_AABB{ { old_pos.x + body.size.x / 2.f, old_pos.y + body.size.y / 2.f }, body.size / 2.f };
+	const AABB body_AABB{ old_pos.xy() + body.size / 2.f, body.size / 2.f};
 	const Vector3f movement = new_pos - old_pos;
 
-	const Vector2i tilemap_pos_tl = tilemap.world_to_map({ new_pos.x, new_pos.y });
+	const Vector2i tilemap_pos_tl = tilemap.world_to_map(new_pos.xy());
 	const uint8_t id_tl = tilemap.get_cell_id(tilemap_pos_tl.x, tilemap_pos_tl.y);
 	const TileProperties& properties_tl = tilemap.get_tile_set().get_properties(id_tl);
 
@@ -118,7 +118,7 @@ void PhysicsSpace::resolve_tilemap_collision(Vector3f& new_pos, const Vector3f& 
 	const uint8_t id_bl = tilemap.get_cell_id(tilemap_pos_bl.x, tilemap_pos_bl.y);
 	const TileProperties& properties_bl = tilemap.get_tile_set().get_properties(id_bl);
 
-	const Vector2i tilemap_pos_br = tilemap.world_to_map({ new_pos.x + body.size.x, new_pos.y + body.size.y });
+	const Vector2i tilemap_pos_br = tilemap.world_to_map(new_pos.xy() + body.size);
 	const uint8_t id_br = tilemap.get_cell_id(tilemap_pos_br.x, tilemap_pos_br.y);
 	const TileProperties& properties_br = tilemap.get_tile_set().get_properties(id_br);
 
