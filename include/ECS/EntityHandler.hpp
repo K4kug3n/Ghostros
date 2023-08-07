@@ -9,20 +9,29 @@ class EntityHandler
 {
 public:
 	EntityHandler(World& world, entt::entity entity);
-	EntityHandler(const EntityHandler&) = delete;
+	EntityHandler(const EntityHandler&) = default;
 	EntityHandler(EntityHandler&&) = default;
 	~EntityHandler() = default;
 
 	template<typename T, typename... Args>
-	T& add_component(Args... args);
+	T& add_component(Args... args) const;
 
-	EntityHandler& operator=(const EntityHandler&) = delete;
+	template<typename T, typename... Args>
+	T& add_or_replace_component(Args... args) const;
+
+	template<typename T>
+	T& get() const;
+
+	template<typename T>
+	void remove() const;
+
+	EntityHandler& operator=(const EntityHandler&) = default;
 	EntityHandler& operator=(EntityHandler&&) = default;
 
 	friend class World;
 private:
 	entt::entity m_entity;
-	World& m_world;
+	World* m_world;
 };
 
 #include "ECS/EntityHandler.inl"
