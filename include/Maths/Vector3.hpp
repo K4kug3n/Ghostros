@@ -1,6 +1,8 @@
 #ifndef MATHS_VECTOR3_HPP
 #define MATHS_VECTOR3_HPP
 
+#include "Maths/Vector2.hpp"
+
 template <typename T>
 class Vector3
 {
@@ -13,6 +15,10 @@ public:
 
 	T length() const;
 	void normalize();
+
+	Vector2<T> xy() const;
+	Vector2<T> xz() const;
+	Vector2<T> yz() const;
 
 	Vector3& operator+=(const Vector3& other);
 	Vector3& operator-=(const Vector3& other);

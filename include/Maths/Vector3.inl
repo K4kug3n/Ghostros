@@ -1,3 +1,5 @@
+#include "Maths/Vector3.hpp"
+
 template<typename T>
 inline Vector3<T>::Vector3(T x, T y, T z)
 	: x(x)
@@ -18,6 +20,24 @@ inline void Vector3<T>::normalize()
 	x /= l;
 	y /= l;
 	z /= l;
+}
+
+template<typename T>
+inline Vector2<T> Vector3<T>::xy() const
+{
+	return Vector2{ x, y };
+}
+
+template<typename T>
+inline Vector2<T> Vector3<T>::xz() const
+{
+	return Vector2{ x, z };
+}
+
+template<typename T>
+inline Vector2<T> Vector3<T>::yz() const
+{
+	return Vector2{ y, z };
 }
 
 template<typename T>
