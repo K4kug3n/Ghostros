@@ -128,8 +128,6 @@ std::optional<Hit> AABB::intersect_segment(const Vector2f& pos, const Vector2f& 
 
 bool AABB::is_intersecting(const AABB& box) const
 {
-	return (position.x > box.position.x) && (position.x < (box.position.x + box.half.x)) && (position.y > box.position.y) && (position.y < (box.position.y + box.half.y))
-		|| ((position.x + half.x) > box.position.x) && ((position.x + half.x) < (box.position.x + box.half.x)) && (position.y > box.position.y) && (position.y < (box.position.y + box.half.y))
-		|| (position.x > box.position.x) && (position.x < (box.position.x + box.half.x)) && ((position.y + half.y) > box.position.y) && ((position.y + half.y) < (box.position.y + box.half.y))
-		|| ((position.x + half.x) > box.position.x) && ((position.x + half.x) < (box.position.x + box.half.x)) && ((position.y + half.y) > box.position.y) && ((position.y + half.y) < (box.position.y + box.half.y));
+	Vector2f diff = position - box.position;
+	return (abs(diff.x) < (half.x + box.half.x)) && (abs(diff.y) < (half.y + box.half.y));
 }
