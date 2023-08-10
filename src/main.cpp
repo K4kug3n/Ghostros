@@ -36,16 +36,16 @@ int main()
 	ghost_sprite.add_animation("idle", std::move(texture), 1, 3, 3.f);
 	ghost_sprite.play("idle");
 
-	player.add_component<Node>(Vector3f{ 96.f, 96.f, 0.f });
-	RigidBody& player_body = player.add_component<RigidBody>(1.f, Vector2f{ 27.f, 29.f });
+	player.add_component<Node>(Vector3f{ 96.f, 96.f, 0.f }, Vector2f{ 27.f, 29.f });
+	RigidBody& player_body = player.add_component<RigidBody>();
 
 	EntityHandler tilemap = world.create();
 	tilemap.add_component<TileMap>(TileMap::LoadFromFile("stage_1.json"));
-	tilemap.add_component<Node>(Vector3f{ 0.f, 0.f, 0.f });
+	tilemap.add_component<Node>(Vector3f{ 0.f, 0.f, 0.f }, Vector2{ 0.f, 0.f });
 
 	EntityHandler win_trigger = world.create();
-	win_trigger.add_component<Node>(Vector3f{ 500.f, 740.f, 0.f });
-	win_trigger.add_component<RigidBody>(1.f, Vector2f{ 33.f, 30.f });
+	win_trigger.add_component<Node>(Vector3f{ 500.f, 740.f, 0.f }, Vector2f{ 33.f, 30.f });
+	win_trigger.add_component<RigidBody>();
 	win_trigger.add_component<CollisionCallback>([](const EntityHandler&, const EntityHandler&, const Vector2f&) { std::cout << "Touched" << std::endl; });
 	Texture heart_texture{ "sprites/hearth.png" };
 	win_trigger.add_component<Sprite>(std::move(heart_texture));

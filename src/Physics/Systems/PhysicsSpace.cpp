@@ -11,6 +11,81 @@
 
 #include "Graphics/Components/TileMap.hpp"
 
+
+void resolve_tilemap_collision(Vector3f& new_pos, const Vector3f& old_pos, const Vector2f& size, RigidBody& body, const TileMap& tilemap)
+{
+	const AABB body_AABB{ old_pos.xy() + size / 2.f, size / 2.f };
+	const Vector3f movement = new_pos - old_pos;
+
+	const Vector2i tilemap_pos_tl = tilemap.world_to_map(new_pos.xy());
+	const uint8_t id_tl = tilemap.get_cell_id(tilemap_pos_tl.x, tilemap_pos_tl.y);
+	const TileProperties& properties_tl = tilemap.get_tile_set().get_properties(id_tl);
+
+	const Vector2i tilemap_pos_tr = tilemap.world_to_map({ new_pos.x + size.x, new_pos.y });
+	const uint8_t id_tr = tilemap.get_cell_id(tilemap_pos_tr.x, tilemap_pos_tr.y);
+	const TileProperties& properties_tr = tilemap.get_tile_set().get_properties(id_tr);
+
+	const Vector2i tilemap_pos_bl = tilemap.world_to_map({ new_pos.x, new_pos.y + size.y });
+	const uint8_t id_bl = tilemap.get_cell_id(tilemap_pos_bl.x, tilemap_pos_bl.y);
+	const TileProperties& properties_bl = tilemap.get_tile_set().get_properties(id_bl);
+
+	const Vector2i tilemap_pos_br = tilemap.world_to_map(new_pos.xy() + size);
+	const uint8_t id_br = tilemap.get_cell_id(tilemap_pos_br.x, tilemap_pos_br.y);
+	const TileProperties& properties_br = tilemap.get_tile_set().get_properties(id_br);
+
+	std::vector<AABB> colliders{};
+	if (properties_tl.collide)
+	{
+		colliders.emplace_back(tilemap.get_AABB(tilemap_pos_tl.x, tilemap_pos_tl.y));
+	}
+
+	if (properties_tr.collide)
+	{
+		colliders.emplace_back(tilemap.get_AABB(tilemap_pos_tr.x, tilemap_pos_tr.y));
+	}
+
+	if (properties_bl.collide)
+	{
+		colliders.emplace_back(tilemap.get_AABB(tilemap_pos_bl.x, tilemap_pos_bl.y));
+	}
+
+	if (properties_br.collide)
+	{
+		colliders.emplace_back(tilemap.get_AABB(tilemap_pos_br.x, tilemap_pos_br.y));
+	}
+
+	Sweep nearest{};
+	nearest.time = 1;
+	nearest.pos.x = (old_pos.x + size.x / 2.f) + movement.x;
+	nearest.pos.y = (old_pos.y + size.y / 2.f) + movement.y;
+	for (size_t i = 0; i < colliders.size(); ++i)
+	{
+		Sweep sweep = colliders[i].sweep_intersection(body_AABB, movement.xy());
+		if (sweep.time < nearest.time) {
+			nearest = std::move(sweep);
+		}
+	}
+
+	new_pos = { nearest.pos.x - body_AABB.half.x, nearest.pos.y - body_AABB.half.y, new_pos.z };
+
+	if (nearest.time != 1)
+	{
+		if (nearest.hit.value().normal.x != 0)
+		{
+			body.velocity.x = 0.f;
+		}
+		else if (nearest.hit.value().normal.y != 0)
+		{
+			body.velocity.y = 0.f;
+		}
+
+		if (nearest.hit.value().normal.y == -1)
+		{
+			body.on_ground = true;
+		}
+	}
+}
+
 PhysicsSpace::PhysicsSpace(World& world)
 	: System(world)
 	, m_gravity(0.f, 0.f)
@@ -54,7 +129,7 @@ void PhysicsSpace::step(float dt)
 
 		for (auto [_, tilemap] : tilemap_view.each())
 		{
-			resolve_tilemap_collision(new_pos, node.get_position(), body, tilemap);
+			resolve_tilemap_collision(new_pos, node.get_position(), node.get_size(), body, tilemap);
 		}
 		 
 		node.set_position(new_pos);
@@ -69,8 +144,8 @@ void PhysicsSpace::step(float dt)
 				continue;
 			}
 
-			AABB aabb_a{ node_a.get_position().xy() + body_a.size / 2.f, body_a.size / 2.f };
-			AABB aabb_b{ node_b.get_position().xy() + body_b.size / 2.f, body_b.size / 2.f };
+			AABB aabb_a{ node_a.get_center().xy(), node_a.get_size() / 2.f };
+			AABB aabb_b{ node_b.get_center().xy(), node_b.get_size() / 2.f };
 
 			if (aabb_a.is_intersecting(aabb_b))
 			{
@@ -86,91 +161,16 @@ void PhysicsSpace::step(float dt)
 	auto collision_view = m_world.view<Node, RigidBody, Collision>();
 	for (auto [id_a, node_a, body_a, collision] : collision_view.each())
 	{
-		AABB aabb_a{ node_a.get_position().xy() + body_a.size / 2.f, body_a.size / 2.f };
+		AABB aabb_a{ node_a.get_center().xy(), node_a.get_size() / 2.f };
 		const EntityHandler& id_b = collision.get_collider();
 
 		const Node& node_b = id_b.get<Node>();
-		const RigidBody& body_b = id_b.get<RigidBody>();
 
-		AABB aabb_b{ node_b.get_position().xy() + body_b.size / 2.f, body_b.size / 2.f };
+		AABB aabb_b{ node_b.get_center().xy(), node_b.get_size() / 2.f };
 		if (!aabb_a.is_intersecting(aabb_b))
 		{
 			EntityHandler handler_a{ m_world, id_a };
 			handler_a.remove<Collision>();
-		}
-	}
-}
-
-void PhysicsSpace::resolve_tilemap_collision(Vector3f& new_pos, const Vector3f& old_pos, RigidBody& body, const TileMap& tilemap)
-{
-	const AABB body_AABB{ old_pos.xy() + body.size / 2.f, body.size / 2.f};
-	const Vector3f movement = new_pos - old_pos;
-
-	const Vector2i tilemap_pos_tl = tilemap.world_to_map(new_pos.xy());
-	const uint8_t id_tl = tilemap.get_cell_id(tilemap_pos_tl.x, tilemap_pos_tl.y);
-	const TileProperties& properties_tl = tilemap.get_tile_set().get_properties(id_tl);
-
-	const Vector2i tilemap_pos_tr = tilemap.world_to_map({ new_pos.x + body.size.x, new_pos.y });
-	const uint8_t id_tr = tilemap.get_cell_id(tilemap_pos_tr.x, tilemap_pos_tr.y);
-	const TileProperties& properties_tr = tilemap.get_tile_set().get_properties(id_tr);
-
-	const Vector2i tilemap_pos_bl = tilemap.world_to_map({ new_pos.x, new_pos.y + body.size.y });
-	const uint8_t id_bl = tilemap.get_cell_id(tilemap_pos_bl.x, tilemap_pos_bl.y);
-	const TileProperties& properties_bl = tilemap.get_tile_set().get_properties(id_bl);
-
-	const Vector2i tilemap_pos_br = tilemap.world_to_map(new_pos.xy() + body.size);
-	const uint8_t id_br = tilemap.get_cell_id(tilemap_pos_br.x, tilemap_pos_br.y);
-	const TileProperties& properties_br = tilemap.get_tile_set().get_properties(id_br);
-
-	std::vector<AABB> colliders{};
-	if (properties_tl.collide)
-	{
-		colliders.emplace_back(tilemap.get_AABB(tilemap_pos_tl.x, tilemap_pos_tl.y));
-	}
-
-	if (properties_tr.collide)
-	{
-		colliders.emplace_back(tilemap.get_AABB(tilemap_pos_tr.x, tilemap_pos_tr.y));
-	}
-
-	if (properties_bl.collide)
-	{
-		colliders.emplace_back(tilemap.get_AABB(tilemap_pos_bl.x, tilemap_pos_bl.y));
-	}
-
-	if (properties_br.collide)
-	{
-		colliders.emplace_back(tilemap.get_AABB(tilemap_pos_br.x, tilemap_pos_br.y));
-	}
-
-	Sweep nearest{};
-	nearest.time = 1;
-	nearest.pos.x = (old_pos.x + body.size.x / 2) + movement.x;
-	nearest.pos.y = (old_pos.y + body.size.y / 2) + movement.y;
-	for (size_t i = 0; i < colliders.size(); ++i)
-	{
-		Sweep sweep = colliders[i].sweep_intersection(body_AABB, { movement.x, movement.y });
-		if (sweep.time < nearest.time) {
-			nearest = std::move(sweep);
-		}
-	}
-	
-	new_pos = { nearest.pos.x - body_AABB.half.x, nearest.pos.y - body_AABB.half.y, new_pos.z };
-
-	if (nearest.time != 1)
-	{
-		if (nearest.hit.value().normal.x != 0)
-		{
-			body.velocity.x = 0.f;
-		}
-		else if (nearest.hit.value().normal.y != 0)
-		{
-			body.velocity.y = 0.f;
-		}
-
-		if (nearest.hit.value().normal.y == -1)
-		{
-			body.on_ground = true;
 		}
 	}
 }

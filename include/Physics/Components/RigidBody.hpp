@@ -6,8 +6,7 @@
 class RigidBody
 {
 public:
-	RigidBody() = delete;
-	RigidBody(float mass, Vector2f size);
+	RigidBody();
 	RigidBody(RigidBody&&) = default;
 	RigidBody(const RigidBody&) = delete;
 	~RigidBody() = default;
@@ -15,8 +14,6 @@ public:
 	RigidBody& operator=(RigidBody&&) = default;
 	RigidBody& operator=(const RigidBody&) = delete;
 
-	float mass;
-	Vector2f size;
 	Vector2f velocity;
 	bool on_ground;
 	bool jump;

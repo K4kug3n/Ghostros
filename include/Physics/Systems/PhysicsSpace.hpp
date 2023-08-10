@@ -26,7 +26,6 @@ public:
 	PhysicsSpace& operator=(const PhysicsSpace&) = delete;
 
 private:
-	void resolve_tilemap_collision(Vector3f& new_pos, const Vector3f& old_pos, RigidBody& body, const TileMap& tilemap);
 
 	Vector2f m_gravity;
 };
