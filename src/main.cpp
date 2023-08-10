@@ -12,6 +12,9 @@
 #include "ECS/World.hpp"
 #include "ECS/EntityHandler.hpp"
 #include "ECS/Components/Node.hpp"
+#include "ECS/Components/Sprite.hpp"
+#include "ECS/Components/CollisionCallback.hpp"
+#include "ECS/Systems/CollisionTrigger.hpp"
 
 #include "Physics/Systems/PhysicsSpace.hpp"
 #include "Physics/Components/RigidBody.hpp"
@@ -25,6 +28,7 @@ int main()
 	space.set_gravity({ 0.f, 98.1f });
 
 	world.add_system<RenderSystem>();
+	world.add_system<CollisionTrigger>();
 	EntityHandler player = world.create();
 
 	Texture texture{ "sprites/ghost-1.png" };
@@ -38,6 +42,13 @@ int main()
 	EntityHandler tilemap = world.create();
 	tilemap.add_component<TileMap>(TileMap::LoadFromFile("stage_1.json"));
 	tilemap.add_component<Node>(Vector3f{ 0.f, 0.f, 0.f });
+
+	EntityHandler win_trigger = world.create();
+	win_trigger.add_component<Node>(Vector3f{ 500.f, 740.f, 0.f });
+	win_trigger.add_component<RigidBody>(1.f, Vector2f{ 33.f, 30.f });
+	win_trigger.add_component<CollisionCallback>([](const EntityHandler&, const EntityHandler&, const Vector2f&) { std::cout << "Touched" << std::endl; });
+	Texture heart_texture{ "sprites/hearth.png" };
+	win_trigger.add_component<Sprite>(std::move(heart_texture));
 
 	RenderWindow window{ 640, 480, "NotSureYet" };
 	Camera& camera = player.add_component<Camera>(0, 0, window.get_size().x, window.get_size().y);
