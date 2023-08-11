@@ -11,8 +11,7 @@
 
 #include "Graphics/Components/TileMap.hpp"
 
-
-void resolve_tilemap_collision(Vector3f& new_pos, const Vector3f& old_pos, const Vector2f& size, RigidBody& body, const TileMap& tilemap)
+bool tilemap_collsion(Vector3f& new_pos, const Vector3f& old_pos, const Vector2f& size, RigidBody& body, const TileMap& tilemap)
 {
 	const AABB body_AABB{ old_pos.xy() + size / 2.f, size / 2.f };
 	const Vector3f movement = new_pos - old_pos;
@@ -55,7 +54,7 @@ void resolve_tilemap_collision(Vector3f& new_pos, const Vector3f& old_pos, const
 	}
 
 	Sweep nearest{};
-	nearest.time = 1;
+	nearest.time = 1.f;
 	nearest.pos.x = (old_pos.x + size.x / 2.f) + movement.x;
 	nearest.pos.y = (old_pos.y + size.y / 2.f) + movement.y;
 	for (size_t i = 0; i < colliders.size(); ++i)
@@ -68,22 +67,30 @@ void resolve_tilemap_collision(Vector3f& new_pos, const Vector3f& old_pos, const
 
 	new_pos = { nearest.pos.x - body_AABB.half.x, nearest.pos.y - body_AABB.half.y, new_pos.z };
 
-	if (nearest.time != 1)
-	{
-		if (nearest.hit.value().normal.x != 0)
-		{
-			body.velocity.x = 0.f;
-		}
-		else if (nearest.hit.value().normal.y != 0)
-		{
-			body.velocity.y = 0.f;
-		}
+	return nearest.time != 1.f;
+}
 
-		if (nearest.hit.value().normal.y == -1)
+void resolve_tilemap_collision(Vector3f& new_pos, const Vector3f& old_pos, const Vector2f& size, RigidBody& body, const TileMap& tilemap)
+{
+	const Vector2f movement = new_pos.xy() - old_pos.xy();
+	Vector3f partial_pos{ old_pos.x, old_pos.y + movement.y, old_pos.z };
+
+	if (tilemap_collsion(partial_pos, old_pos, size, body, tilemap))
+	{
+		body.velocity.y = 0.f;
+		if (movement.y > 0.f)
 		{
 			body.on_ground = true;
 		}
 	}
+	
+	partial_pos.x += movement.x;
+	if (tilemap_collsion(partial_pos, old_pos, size, body, tilemap))
+	{
+		body.velocity.x = 0.f;
+	}
+
+	new_pos = partial_pos;
 }
 
 PhysicsSpace::PhysicsSpace(World& world)
@@ -94,7 +101,7 @@ PhysicsSpace::PhysicsSpace(World& world)
 
 void PhysicsSpace::update(RenderWindow&, InputHandler&, double delta_time)
 {
-	step(static_cast<float>(delta_time));
+	step(std::min(static_cast<float>(delta_time), 0.16f));
 }
 
 void PhysicsSpace::set_gravity(Vector2f gravity)
@@ -111,7 +118,7 @@ void PhysicsSpace::step(float dt)
 	{
 		if (body.jump && body.on_ground)
 		{
-			body.velocity.y = -100.f;
+			body.velocity.y = -120.f;
 			body.jump = false;
 			body.on_ground = false;
 		}
@@ -120,7 +127,7 @@ void PhysicsSpace::step(float dt)
 			body.jump = false;
 		}
 
-		body.velocity.x = std::min(body.velocity.x, 100.f);
+		body.velocity.x = std::max(std::min(body.velocity.x, 100.f), -100.f);
 
 		body.velocity += m_gravity * dt;
 
@@ -158,7 +165,7 @@ void PhysicsSpace::step(float dt)
 		}
 	}
 
-	auto collision_view = m_world.view<Node, RigidBody, Collision>();
+	auto collision_view = m_world.view<Node, RigidBody, Collision>(); // Remove not revelant collision
 	for (auto [id_a, node_a, body_a, collision] : collision_view.each())
 	{
 		AABB aabb_a{ node_a.get_center().xy(), node_a.get_size() / 2.f };
