@@ -21,7 +21,8 @@ void RenderSystem::update(RenderWindow& window, InputHandler&, double delta_t)
 		[&window](const Node& node, Camera& camera)
 		{
 			sf::View& view = camera.get_view();
-			view.setCenter(node.get_position().x, node.get_position().y);
+			const Vector3f& position = node.get_position();
+			view.setCenter(position.x, position.y);
 			window.set_camera(camera);
 		}
 	);
@@ -39,6 +40,7 @@ void RenderSystem::update(RenderWindow& window, InputHandler&, double delta_t)
 		[&window](const Node& node, Sprite& sprite)
 		{
 			sprite.set_position(node.get_position());
+			sprite.set_size(node.get_size().as<unsigned>());
 			window.draw(sprite.get_handle());
 		}
 	);

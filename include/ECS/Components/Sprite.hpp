@@ -4,6 +4,7 @@
 #include <SFML/Graphics/Sprite.hpp>
 
 #include "Graphics/Texture.hpp"
+#include "Maths/Vector2.hpp"
 
 template<typename T> class Vector3;
 using Vector3f = Vector3<float>;
@@ -19,12 +20,14 @@ public:
 
 	const sf::Sprite& get_handle() const;
 	void set_position(const Vector3f& position);
+	void set_size(const Vector2u& size);
 
 	Sprite& operator=(Sprite&&) = default;
 	Sprite& operator=(const Sprite&) = delete;
 
 private:
 	Texture m_texture;
+	Vector2u m_size;
 
 	sf::Sprite m_sprite;
 };
