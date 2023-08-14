@@ -12,7 +12,9 @@ public:
 	Vector3(const Vector3&) = default;
 	Vector3(Vector3&&) = default;
 	~Vector3() = default;
-
+	
+	template<typename U>
+	Vector3<U> as() const;
 	T length() const;
 	void normalize();
 

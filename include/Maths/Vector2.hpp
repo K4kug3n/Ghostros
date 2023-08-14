@@ -11,6 +11,8 @@ public:
 	Vector2(Vector2&&) = default;
 	~Vector2() = default;
 
+	template<typename U>
+	Vector2<U> as() const;
 	T length() const;
 	void normalize();
 
@@ -55,5 +57,3 @@ Vector2<T> operator/(T coeff, const Vector2<T>& rhs);
 #include "Maths/Vector2.inl"
 
 #endif
-
-

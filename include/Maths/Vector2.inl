@@ -9,6 +9,13 @@ inline Vector2<T>::Vector2(T x, T y)
 {}
 
 template<typename T>
+template<typename U>
+inline Vector2<U> Vector2<T>::as() const
+{
+	return Vector2<U>{ static_cast<U>(x), static_cast<U>(y) };
+}
+
+template<typename T>
 inline T Vector2<T>::length() const
 {
 	return static_cast<T>(std::sqrt(x * x + y * y));

@@ -8,6 +8,13 @@ inline Vector3<T>::Vector3(T x, T y, T z)
 {}
 
 template<typename T>
+template<typename U>
+inline Vector3<U> Vector3<T>::as() const
+{
+	return Vector3<U>{ static_cast<U>(x), static_cast<U>(y), static_cast<U>(z) };
+}
+
+template<typename T>
 inline T Vector3<T>::length() const
 {
 	return static_cast<T>(std::sqrt(x * x + y * y + z * z));
