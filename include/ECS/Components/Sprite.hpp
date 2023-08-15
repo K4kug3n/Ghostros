@@ -14,7 +14,7 @@ class Sprite
 public:
 	Sprite() = delete;
 	Sprite(TextureHandle texture);
-	Sprite(Sprite&& other) noexcept;
+	Sprite(Sprite&&) = default;
 	Sprite(const Sprite&) = delete;
 	~Sprite() = default;
 
@@ -23,7 +23,7 @@ public:
 	void set_size(const Vector2u& size);
 	void set_texture_rect(const Vector2u& top_left, Vector2u size);
 
-	Sprite& operator=(Sprite&& other) noexcept;
+	Sprite& operator=(Sprite&&) = default;
 	Sprite& operator=(const Sprite&) = delete;
 
 private:
