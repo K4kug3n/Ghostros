@@ -17,6 +17,9 @@ public:
 	T& add_component(Args... args) const;
 
 	template<typename T, typename... Args>
+	void add_flag(Args... args) const;
+
+	template<typename T, typename... Args>
 	T& add_or_replace_component(Args... args) const;
 
 	template<typename T>
