@@ -52,6 +52,7 @@ void RenderSystem::update(RenderWindow& window, InputHandler&, double delta_t)
 			animated_sprite.update(delta_t);
 			Sprite& sprite = animated_sprite.get_frame();
 			sprite.set_position(node.get_position());
+			sprite.set_size(node.get_size().as<unsigned>());
 			window.draw(sprite.get_handle());
 		}
 	);
