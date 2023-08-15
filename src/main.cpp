@@ -20,6 +20,7 @@
 #include "Physics/Systems/PhysicsSpace.hpp"
 #include "Physics/Components/RigidBody.hpp"
 #include "Physics/Components/StaticBody.hpp"
+#include "Physics/Components/Collision.hpp"
 
 int main()
 {
@@ -50,12 +51,22 @@ int main()
 	EntityHandler win_trigger = world.create();
 	win_trigger.add_component<Node>(Vector3f{ 1724.f, 576.f, 0.f }, Vector2f{ 69.f, 288.f });
 	win_trigger.add_flag<StaticBody>();
-	win_trigger.add_component<CollisionCallback>([](const EntityHandler&, const EntityHandler&, const Vector2f&) { std::cout << "Touched" << std::endl; });
 	TextureHandle flag_texture = texture_cache.get("sprites/flag.png");
-	AnimatedSprite& flag_sprite = win_trigger.add_component<AnimatedSprite>();
-	flag_sprite.add_animation("up", std::move(flag_texture), 1, 5, 1.f);
-	flag_sprite.play("up");
+	Sprite& flag_sprite = win_trigger.add_component<Sprite>(flag_texture);
+	flag_sprite.set_texture_rect({ 0, 0 }, { 23, 96 });
+	win_trigger.add_component<CollisionCallback>(
+		[flag_texture](const EntityHandler& self, const EntityHandler&, const Vector2f&)
+		{ 
+			self.remove<StaticBody>();
+			self.remove<Collision>();
+			self.remove<Sprite>();
 
+			AnimatedSprite& sprite = self.add_component<AnimatedSprite>();
+			sprite.add_animation("up", std::move(flag_texture), 1, 5, 1.f);
+			sprite.play("up");
+		}
+	);
+	
 	RenderWindow window{ 640, 480, "NotSureYet" };
 	Camera& camera = player.add_component<Camera>(0, 0, window.get_size().x, window.get_size().y);
 
