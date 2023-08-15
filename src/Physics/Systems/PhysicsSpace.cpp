@@ -7,6 +7,7 @@
 #include "ECS/Components/Node.hpp"
 
 #include "Physics/Components/RigidBody.hpp"
+#include "Physics/Components/StaticBody.hpp"
 #include "Physics/Components/Collision.hpp"
 
 #include "Graphics/Components/TileMap.hpp"
@@ -142,9 +143,9 @@ void PhysicsSpace::step(float dt)
 		node.set_position(new_pos);
 	}
 
-	for (auto [id_a, node_a, body_a] : body_view.each()) // Entity collision
+	for (auto [id_a, node_a, _] : body_view.each()) // Entity collision
 	{
-		for (auto [id_b, node_b, body_b] : body_view.each())
+		for (auto [id_b, node_b, _] : body_view.each())
 		{
 			if (id_a == id_b)
 			{
@@ -165,8 +166,27 @@ void PhysicsSpace::step(float dt)
 		}
 	}
 
-	auto collision_view = m_world.view<Node, RigidBody, Collision>(); // Remove not revelant collision
-	for (auto [id_a, node_a, body_a, collision] : collision_view.each())
+	auto static_view = m_world.view<Node, StaticBody>(); // Static collision
+	for (auto [id_a, node_a] : static_view.each())
+	{
+		for (auto [id_b, node_b, _] : body_view.each())
+		{
+			AABB aabb_a{ node_a.get_center().xy(), node_a.get_size() / 2.f };
+			AABB aabb_b{ node_b.get_center().xy(), node_b.get_size() / 2.f };
+
+			if (aabb_a.is_intersecting(aabb_b))
+			{
+				EntityHandler handler_a{ m_world, id_a };
+				EntityHandler handler_b{ m_world, id_b };
+
+				handler_a.add_or_replace_component<Collision>(Collision{ handler_b, node_a.get_position().xy() });
+				handler_b.add_or_replace_component<Collision>(Collision{ handler_a, node_b.get_position().xy() });
+			}
+		}
+	}
+
+	auto collision_view = m_world.view<Node, Collision>(); // Remove not revelant collision
+	for (auto [id_a, node_a, collision] : collision_view.each())
 	{
 		AABB aabb_a{ node_a.get_center().xy(), node_a.get_size() / 2.f };
 		const EntityHandler& id_b = collision.get_collider();

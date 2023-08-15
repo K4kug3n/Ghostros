@@ -18,6 +18,7 @@
 
 #include "Physics/Systems/PhysicsSpace.hpp"
 #include "Physics/Components/RigidBody.hpp"
+#include "Physics/Components/StaticBody.hpp"
 
 int main()
 {
@@ -44,8 +45,8 @@ int main()
 	tilemap.add_component<Node>(Vector3f{ 0.f, 0.f, 0.f }, Vector2{ 0.f, 0.f });
 
 	EntityHandler win_trigger = world.create();
-	win_trigger.add_component<Node>(Vector3f{ 500.f, 740.f, 0.f }, Vector2f{ 33.f, 30.f });
-	win_trigger.add_component<RigidBody>();
+	win_trigger.add_component<Node>(Vector3f{ 1724.f, 576.f, 0.f }, Vector2f{ 69.f, 288.f });
+	win_trigger.add_flag<StaticBody>();
 	win_trigger.add_component<CollisionCallback>([](const EntityHandler&, const EntityHandler&, const Vector2f&) { std::cout << "Touched" << std::endl; });
 	Texture heart_texture{ "sprites/hearth.png" };
 	win_trigger.add_component<Sprite>(std::move(heart_texture));
