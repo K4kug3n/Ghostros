@@ -4,6 +4,7 @@
 
 #include "Graphics/RenderWindow.hpp"
 #include "Graphics/Scene.hpp"
+#include "Graphics/TextureCache.hpp"
 #include "Graphics/Systems/RenderSystem.hpp"
 #include "Graphics/Components/Camera.hpp"
 #include "Graphics/Components/AnimatedSprite.hpp"
@@ -32,9 +33,11 @@ int main()
 	world.add_system<CollisionTrigger>();
 	EntityHandler player = world.create();
 
-	Texture texture{ "sprites/ghost-1.png" };
+	TextureCache texture_cache;
+
+	TextureHandle player_texture = texture_cache.get("sprites/ghost-1.png");
 	AnimatedSprite& ghost_sprite = player.add_component<AnimatedSprite>();
-	ghost_sprite.add_animation("idle", std::move(texture), 1, 3, 3.f);
+	ghost_sprite.add_animation("idle", std::move(player_texture), 1, 3, 3.f);
 	ghost_sprite.play("idle");
 
 	player.add_component<Node>(Vector3f{ 96.f, 96.f, 0.f }, Vector2f{ 27.f, 29.f });
@@ -48,8 +51,10 @@ int main()
 	win_trigger.add_component<Node>(Vector3f{ 1724.f, 576.f, 0.f }, Vector2f{ 69.f, 288.f });
 	win_trigger.add_flag<StaticBody>();
 	win_trigger.add_component<CollisionCallback>([](const EntityHandler&, const EntityHandler&, const Vector2f&) { std::cout << "Touched" << std::endl; });
-	Texture heart_texture{ "sprites/hearth.png" };
-	win_trigger.add_component<Sprite>(std::move(heart_texture));
+	TextureHandle flag_texture = texture_cache.get("sprites/flag.png");
+	AnimatedSprite& flag_sprite = win_trigger.add_component<AnimatedSprite>();
+	flag_sprite.add_animation("up", std::move(flag_texture), 1, 5, 1.f);
+	flag_sprite.play("up");
 
 	RenderWindow window{ 640, 480, "NotSureYet" };
 	Camera& camera = player.add_component<Camera>(0, 0, window.get_size().x, window.get_size().y);

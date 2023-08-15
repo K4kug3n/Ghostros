@@ -18,9 +18,9 @@ AnimatedSprite::AnimatedSprite(AnimatedSprite&& other) noexcept
 {
 }
 
-void AnimatedSprite::add_animation(std::string name, Texture sprite_sheet, unsigned nb_rows, unsigned nb_cols, double duration)
+void AnimatedSprite::add_animation(std::string name, TextureHandle sprite_sheet, unsigned nb_rows, unsigned nb_cols, double duration)
 {
-	Vector2u frame_size{ sprite_sheet.get_width() / nb_cols, sprite_sheet.get_height() / nb_rows };
+	Vector2u frame_size{ sprite_sheet->get_width() / nb_cols, sprite_sheet->get_height() / nb_rows };
 	Animation new_animation{
 		Sprite{ std::move(sprite_sheet) },
 		duration / (nb_cols * nb_rows),

@@ -4,7 +4,7 @@
 #include <unordered_map>
 
 #include "ECS/Components/Sprite.hpp"
-#include "Graphics/Texture.hpp"
+#include "Graphics/TextureHandle.hpp"
 #include "Maths/Vector2.hpp"
 
 // Heavy class, should split texture management, animation data & animation player
@@ -16,7 +16,7 @@ public:
 	AnimatedSprite(const AnimatedSprite&) = delete;
 	~AnimatedSprite() = default;
 
-	void add_animation(std::string name, Texture sprite_sheet, unsigned nb_rows, unsigned nb_cols, double duration);
+	void add_animation(std::string name, TextureHandle sprite_sheet, unsigned nb_rows, unsigned nb_cols, double duration);
 	void play(const std::string& name);
 	void update(double delta_t);
 

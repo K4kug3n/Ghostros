@@ -2,10 +2,10 @@
 
 #include "Maths/Vector3.hpp"
 
-Sprite::Sprite(Texture texture)
+Sprite::Sprite(TextureHandle texture)
 	: m_texture(std::move(texture))
-	, m_size(m_texture.get_width(), m_texture.get_height())
-	, m_sprite(m_texture.get_handle())
+	, m_size(m_texture->get_width(), m_texture->get_height())
+	, m_sprite(m_texture->get_handle())
 {
 }
 
@@ -14,7 +14,7 @@ Sprite::Sprite(Sprite&& other) noexcept
 	, m_size(std::move(other.m_size))
 	, m_sprite(std::move(other.m_sprite))
 {
-	m_sprite.setTexture(m_texture.get_handle());
+	m_sprite.setTexture(m_texture->get_handle());
 }
 
 const sf::Sprite& Sprite::get_handle() const
@@ -46,7 +46,7 @@ Sprite& Sprite::operator=(Sprite&& other) noexcept
 	m_size = std::move(other.m_size);
 	m_sprite = std::move(m_sprite);
 
-	m_sprite.setTexture(m_texture.get_handle());
+	m_sprite.setTexture(m_texture->get_handle());
 
 	return *this;
 }

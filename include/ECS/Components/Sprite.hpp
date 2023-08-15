@@ -3,7 +3,7 @@
 
 #include <SFML/Graphics/Sprite.hpp>
 
-#include "Graphics/Texture.hpp"
+#include "Graphics/TextureHandle.hpp"
 #include "Maths/Vector2.hpp"
 
 template<typename T> class Vector3;
@@ -13,7 +13,7 @@ class Sprite
 {
 public:
 	Sprite() = delete;
-	Sprite(Texture texture);
+	Sprite(TextureHandle texture);
 	Sprite(Sprite&& other) noexcept;
 	Sprite(const Sprite&) = delete;
 	~Sprite() = default;
@@ -27,7 +27,7 @@ public:
 	Sprite& operator=(const Sprite&) = delete;
 
 private:
-	Texture m_texture;
+	TextureHandle m_texture;
 	Vector2u m_size;
 
 	sf::Sprite m_sprite;
