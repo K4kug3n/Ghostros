@@ -9,14 +9,13 @@ class TextureHandle
 public:
 	TextureHandle() = delete;
 	TextureHandle(std::shared_ptr<Texture> handle);
-	TextureHandle(const TextureHandle&) = delete;
+	TextureHandle(const TextureHandle&) = default;
 	TextureHandle(TextureHandle&&) = default;
 	~TextureHandle() = default;
 
-	Texture& operator->();
-	const Texture& operator->() const;
+	Texture* operator->() const;
 
-	TextureHandle& operator=(const TextureHandle&) = delete;
+	TextureHandle& operator=(const TextureHandle&) = default;
 	TextureHandle& operator=(TextureHandle&&) = default;
 
 private:

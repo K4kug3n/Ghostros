@@ -5,12 +5,7 @@ TextureHandle::TextureHandle(std::shared_ptr<Texture> handle)
 {
 }
 
-Texture& TextureHandle::operator->()
+Texture* TextureHandle::operator->() const
 {
-	return *m_handle;
-}
-
-const Texture& TextureHandle::operator->() const
-{
-	return *m_handle;
+	return m_handle.get();
 }
