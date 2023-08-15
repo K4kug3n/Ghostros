@@ -3,8 +3,7 @@
 
 #include <unordered_map>
 
-#include <SFML/Graphics/Sprite.hpp>
-
+#include "ECS/Components/Sprite.hpp"
 #include "Graphics/Texture.hpp"
 #include "Maths/Vector2.hpp"
 
@@ -21,7 +20,7 @@ public:
 	void play(const std::string& name);
 	void update(double delta_t);
 
-	sf::Sprite& get_frame();
+	Sprite& get_frame();
 
 	AnimatedSprite& operator=(AnimatedSprite&& other) noexcept;
 	AnimatedSprite& operator=(const AnimatedSprite&) = delete;
@@ -29,8 +28,7 @@ public:
 private:
 	struct Animation {
 		Animation() = delete;
-		Texture texture;
-		sf::Sprite frame;
+		Sprite frame;
 		double duration_per_frame;
 		Vector2u frame_size;
 		Vector2u nb_frames;

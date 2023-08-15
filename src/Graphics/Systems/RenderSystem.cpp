@@ -50,9 +50,9 @@ void RenderSystem::update(RenderWindow& window, InputHandler&, double delta_t)
 		[&window, delta_t](const Node& node, AnimatedSprite& animated_sprite)
 		{
 			animated_sprite.update(delta_t);
-			sf::Sprite& sprite = animated_sprite.get_frame();
-			sprite.setPosition({ node.get_position().x, node.get_position().y});
-			window.draw(sprite);
+			Sprite& sprite = animated_sprite.get_frame();
+			sprite.set_position(node.get_position());
+			window.draw(sprite.get_handle());
 		}
 	);
 }

@@ -34,6 +34,12 @@ void Sprite::set_size(const Vector2u& size)
 	m_sprite.setScale(factor.x, factor.y);
 }
 
+void Sprite::set_texture_rect(const Vector2u& top_left, Vector2u size)
+{
+	m_size = std::move(size);
+	m_sprite.setTextureRect(sf::IntRect{ static_cast<int>(top_left.x), static_cast<int>(top_left.y), static_cast<int>(m_size.x), static_cast<int>(m_size.y) });
+}
+
 Sprite& Sprite::operator=(Sprite&& other) noexcept
 {
 	m_texture = std::move(other.m_texture);

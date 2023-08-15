@@ -22,17 +22,13 @@ void AnimatedSprite::add_animation(std::string name, Texture sprite_sheet, unsig
 {
 	Vector2u frame_size{ sprite_sheet.get_width() / nb_cols, sprite_sheet.get_height() / nb_rows };
 	Animation new_animation{
-		std::move(sprite_sheet),
-		sf::Sprite{},
+		Sprite{ std::move(sprite_sheet) },
 		duration / (nb_cols * nb_rows),
 		std::move(frame_size),
 		Vector2u{ nb_cols, nb_rows }
 	};
 
 	m_animations.insert({ name, std::move(new_animation) });
-
-	Animation& animation = m_animations.at(name);
-	animation.frame.setTexture(animation.texture.get_handle());
 }
 
 void AnimatedSprite::play(const std::string& name)
@@ -67,7 +63,7 @@ void AnimatedSprite::update(double delta_t)
 	update_frame();
 }
 
-sf::Sprite& AnimatedSprite::get_frame()
+Sprite& AnimatedSprite::get_frame()
 {
 	return m_current_animation->frame;
 }
@@ -84,10 +80,14 @@ AnimatedSprite& AnimatedSprite::operator=(AnimatedSprite&& other) noexcept
 
 void AnimatedSprite::update_frame()
 {
-	m_current_animation->frame.setTextureRect(sf::IntRect{
-		static_cast<int>(m_current_frame_position.x * m_current_animation->frame_size.x),
-		static_cast<int>(m_current_frame_position.y * m_current_animation->frame_size.y),
-		static_cast<int>(m_current_animation->frame_size.x),
-		static_cast<int>(m_current_animation->frame_size.y)
-	});
+	m_current_animation->frame.set_texture_rect(
+		{
+			m_current_frame_position.x * m_current_animation->frame_size.x,
+			m_current_frame_position.y * m_current_animation->frame_size.y,
+		},
+		{
+			m_current_animation->frame_size.x,
+			m_current_animation->frame_size.y
+		}
+	);
 }
