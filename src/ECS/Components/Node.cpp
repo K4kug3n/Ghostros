@@ -12,7 +12,7 @@ void Node::add_child(Node& child)
 	m_children.push_back(&child);
 }
 
-const Vector3f& Node::get_center() const
+Vector3f Node::get_center() const
 {
 	return Vector3f{ m_position.x + m_size.x / 2.f, m_position.y + m_size.y / 2.f, m_position.z };
 }

@@ -15,7 +15,7 @@ public:
 	~Node() = default;
 
 	void add_child(Node& child);
-	const Vector3f& get_center() const;
+	Vector3f get_center() const;
 	const Vector3f& get_position() const;
 	const Vector2f& get_size() const;
 	void move(const Vector3f& movement);
