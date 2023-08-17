@@ -27,7 +27,7 @@ public:
 private:
 	std::unordered_map<std::string, Action> m_registered_actions;
 
-	std::vector<Input::Event> m_pending_events;
+	std::vector<InputEvent::Event> m_pending_events;
 };
 
 #endif

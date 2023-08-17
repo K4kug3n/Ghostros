@@ -9,7 +9,7 @@ namespace sf
 }
 
 // Heavily inspired by SFML & SDL event structure
-namespace Input 
+namespace InputEvent
 {
 	enum class Keyboard
 	{

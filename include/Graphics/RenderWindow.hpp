@@ -26,7 +26,7 @@ public:
 	void draw(const sf::Drawable& drawable, const sf::RenderStates& states = sf::RenderStates::Default);
 	Vector2u get_size() const;
 	bool is_open() const;
-	std::optional<Input::Event> poll_event();
+	std::optional<InputEvent::Event> poll_event();
 	void set_camera(const Camera& camera);
 	void set_title(std::string_view title);
 

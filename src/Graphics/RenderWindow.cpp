@@ -39,12 +39,12 @@ bool RenderWindow::is_open() const
 	return m_handle.isOpen();
 }
 
-std::optional<Input::Event> RenderWindow::poll_event()
+std::optional<InputEvent::Event> RenderWindow::poll_event()
 {
 	sf::Event event;
 	if (m_handle.pollEvent(event))
 	{
-		return std::make_optional(Input::Event::From(event));
+		return std::make_optional(InputEvent::Event::From(event));
 	}
 
 	return std::nullopt;

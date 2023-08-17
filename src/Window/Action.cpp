@@ -3,15 +3,15 @@
 ActionEvent::~ActionEvent()
 {}
 
-InternalActionKeyboard::InternalActionKeyboard(Input::Keyboard key)
+InternalActionKeyboard::InternalActionKeyboard(InputEvent::Keyboard key)
 	: m_key(key)
 {}
 
-bool InternalActionKeyboard::is_active(const std::vector<Input::Event>& pending_events) const
+bool InternalActionKeyboard::is_active(const std::vector<InputEvent::Event>& pending_events) const
 {
 	for (auto&& event : pending_events)
 	{
-		if (event.type == Input::Window::KeyPressed && event.key.key == m_key)
+		if (event.type == InputEvent::Window::KeyPressed && event.key.key == m_key)
 		{
 			return true;
 		}
@@ -20,11 +20,11 @@ bool InternalActionKeyboard::is_active(const std::vector<Input::Event>& pending_
 	return false;
 }
 
-InternalActionWindow::InternalActionWindow(Input::Window event)
+InternalActionWindow::InternalActionWindow(InputEvent::Window event)
 	: m_event(event)
 {}
 
-bool InternalActionWindow::is_active(const std::vector<Input::Event>& pending_events) const
+bool InternalActionWindow::is_active(const std::vector<InputEvent::Event>& pending_events) const
 {
 	for (auto&& event : pending_events)
 	{
@@ -37,15 +37,15 @@ bool InternalActionWindow::is_active(const std::vector<Input::Event>& pending_ev
 	return false;
 }
 
-InternalActionMouse::InternalActionMouse(Input::Mouse button)
+InternalActionMouse::InternalActionMouse(InputEvent::Mouse button)
 	: m_button(button)
 {}
 
-bool InternalActionMouse::is_active(const std::vector<Input::Event>& pending_events) const
+bool InternalActionMouse::is_active(const std::vector<InputEvent::Event>& pending_events) const
 {
 	for (auto&& event : pending_events)
 	{
-		if (event.type == Input::Window::MouseButtonPressed && event.mouse_button.button == m_button)
+		if (event.type == InputEvent::Window::MouseButtonPressed && event.mouse_button.button == m_button)
 		{
 			return true;
 		}
@@ -54,19 +54,19 @@ bool InternalActionMouse::is_active(const std::vector<Input::Event>& pending_eve
 	return false;
 }
 
-Action::Action(Input::Keyboard key)
+Action::Action(InputEvent::Keyboard key)
 	: m_action(std::make_unique<InternalActionKeyboard>(key))
 {}
 
-Action::Action(Input::Window event)
+Action::Action(InputEvent::Window event)
 	: m_action(std::make_unique<InternalActionWindow>(event))
 {}
 
-Action::Action(Input::Mouse button)
+Action::Action(InputEvent::Mouse button)
 	: m_action(std::make_unique<InternalActionMouse>(button))
 {}
 
-bool Action::is_active(const std::vector<Input::Event>& pending_events) const
+bool Action::is_active(const std::vector<InputEvent::Event>& pending_events) const
 {
 	return m_action->is_active(pending_events);
 }

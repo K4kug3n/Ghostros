@@ -20,7 +20,7 @@ void InputHandler::update(RenderWindow& render_window)
 {
 	m_pending_events.clear();
 
-	std::optional<Input::Event> event = render_window.poll_event();
+	std::optional<InputEvent::Event> event = render_window.poll_event();
 	while (event)
 	{
 		m_pending_events.push_back(event.value());
