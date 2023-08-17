@@ -9,11 +9,11 @@ EntityHandler World::create()
 	return EntityHandler(*this, std::move(entity));
 }
 
-void World::update(RenderWindow& window, InputHandler& input_handler, double delta_time)
+void World::update(RenderWindow& window, InputHandler&, double delta_time)
 {
 	for(auto&& system : m_systems)
 	{
-		system->update(window, input_handler, delta_time);
+		system->update(delta_time);
 	}
 }
 

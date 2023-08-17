@@ -11,7 +11,7 @@ public:
 	PlayerSystem(const PlayerSystem&) = delete;
 	~PlayerSystem() = default;
 
-	void update(RenderWindow&, InputHandler&, double) override;
+	void update(double) override;
 
 	PlayerSystem& operator=(PlayerSystem&&) = default;
 	PlayerSystem& operator=(const PlayerSystem&) = delete;

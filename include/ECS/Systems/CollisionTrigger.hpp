@@ -12,7 +12,7 @@ public:
 	CollisionTrigger(const CollisionTrigger&) = delete;
 	~CollisionTrigger() = default;
 
-	void update(RenderWindow&, InputHandler&, double) override;
+	void update(double) override;
 
 	CollisionTrigger& operator=(CollisionTrigger&&) = default;
 	CollisionTrigger& operator=(const CollisionTrigger&) = delete;

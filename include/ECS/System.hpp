@@ -13,7 +13,7 @@ public:
 	System(System&&) = default;
 	~System() = default;
 
-	virtual void update(RenderWindow& window, InputHandler& input_handler, double delta_time) = 0;
+	virtual void update(double delta_time) = 0;
 
 	System& operator=(const System&) = delete;
 	System& operator=(System&&) = default;

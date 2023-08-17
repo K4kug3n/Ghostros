@@ -9,7 +9,7 @@ InputSystem::InputSystem(World& world, InputHandler& input_handler)
 {
 }
 
-void InputSystem::update(RenderWindow&, InputHandler&, double)
+void InputSystem::update(double)
 {
 	Input current_input = get_current_input();
 

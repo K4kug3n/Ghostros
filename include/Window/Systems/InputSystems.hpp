@@ -13,7 +13,7 @@ public:
 	InputSystem(const InputSystem&) = delete;
 	~InputSystem() = default;
 
-	void update(RenderWindow&, InputHandler&, double) override;
+	void update(double) override;
 
 	InputSystem& operator=(InputSystem&&) = default;
 	InputSystem& operator=(const InputSystem&) = delete;

@@ -8,7 +8,7 @@ CollisionTrigger::CollisionTrigger(World& world)
 {
 }
 
-void CollisionTrigger::update(RenderWindow&, InputHandler&, double)
+void CollisionTrigger::update(double)
 {
 	auto trigger_view = m_world.view<const Collision, const CollisionCallback>();
 	trigger_view.each(

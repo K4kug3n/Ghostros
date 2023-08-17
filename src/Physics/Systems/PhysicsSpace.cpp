@@ -100,7 +100,7 @@ PhysicsSpace::PhysicsSpace(World& world)
 {
 }
 
-void PhysicsSpace::update(RenderWindow&, InputHandler&, double delta_time)
+void PhysicsSpace::update(double delta_time)
 {
 	step(std::min(static_cast<float>(delta_time), 0.16f));
 }

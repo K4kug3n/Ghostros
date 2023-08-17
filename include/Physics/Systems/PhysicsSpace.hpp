@@ -18,7 +18,7 @@ public:
 	PhysicsSpace(const PhysicsSpace&) = delete;
 	~PhysicsSpace() = default;
 
-	void update(RenderWindow&, InputHandler&, double delta_time) override;
+	void update(double delta_time) override;
 	void set_gravity(Vector2f gravity);
 	void step(float dt);
 

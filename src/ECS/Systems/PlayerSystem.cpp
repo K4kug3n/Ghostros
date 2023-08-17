@@ -12,7 +12,7 @@ PlayerSystem::PlayerSystem(World& world)
 {
 }
 
-void PlayerSystem::update(RenderWindow&, InputHandler&, double)
+void PlayerSystem::update(double)
 {
 	m_world.view<const Input, State, RigidBody>().each(
 		[](const Input input, State& state, RigidBody& body)

@@ -18,8 +18,10 @@ public:
 
 	template<typename T, typename... Args>
 	T& add_system(Args&&... args);
+	
 	EntityHandler create();
-	void update(RenderWindow& window, InputHandler& input_handler, double delta_time) override;
+	void update(RenderWindow&, InputHandler&, double delta_time) override;
+
 	template<typename... Types>
 	entt::view< entt::get_t<Types...>> view();
 

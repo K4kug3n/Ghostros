@@ -15,7 +15,7 @@ RenderSystem::RenderSystem(World& world, RenderWindow& window)
 {
 }
 
-void RenderSystem::update(RenderWindow& window, InputHandler&, double delta_t)
+void RenderSystem::update(double delta_t)
 {
 	auto camera_view = m_world.view<const Node, Camera>();
 	camera_view.each(
