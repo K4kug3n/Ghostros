@@ -7,6 +7,12 @@
 #include "Graphics/TextureHandle.hpp"
 #include "Maths/Vector2.hpp"
 
+enum class AnimationRepetition
+{
+	REPEAT,
+	SINGLE
+};
+
 // Heavy class, should split texture management, animation data & animation player
 class AnimatedSprite
 {
@@ -16,7 +22,7 @@ public:
 	AnimatedSprite(const AnimatedSprite&) = delete;
 	~AnimatedSprite() = default;
 
-	void add_animation(std::string name, TextureHandle sprite_sheet, unsigned nb_rows, unsigned nb_cols, double duration);
+	void add_animation(std::string name, TextureHandle sprite_sheet, unsigned nb_rows, unsigned nb_cols, double duration, AnimationRepetition repetition = AnimationRepetition::SINGLE);
 	void play(const std::string& name);
 	void update(double delta_t);
 
@@ -32,6 +38,7 @@ private:
 		double duration_per_frame;
 		Vector2u frame_size;
 		Vector2u nb_frames;
+		AnimationRepetition repetition;
 	};
 
 	void update_frame();

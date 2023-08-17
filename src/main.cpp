@@ -41,7 +41,7 @@ int main()
 
 	TextureHandle player_texture = texture_cache.get("sprites/ghost-1.png");
 	AnimatedSprite& ghost_sprite = player.add_component<AnimatedSprite>();
-	ghost_sprite.add_animation("idle", std::move(player_texture), 1, 3, 3.f);
+	ghost_sprite.add_animation("idle", std::move(player_texture), 1, 3, 3.f, AnimationRepetition::REPEAT);
 	ghost_sprite.play("idle");
 
 	player.add_component<Node>(Vector3f{ 96.f, 96.f, 0.f }, Vector2f{ 27.f, 29.f });
@@ -67,7 +67,7 @@ int main()
 			self.remove<Sprite>();
 
 			AnimatedSprite& sprite = self.add_component<AnimatedSprite>();
-			sprite.add_animation("up", std::move(flag_texture), 1, 5, 1.f);
+			sprite.add_animation("up", flag_texture, 1, 5, 1.f);
 			sprite.play("up");
 		}
 	);
