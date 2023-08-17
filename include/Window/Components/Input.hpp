@@ -1,0 +1,13 @@
+#ifndef WINDOW_COMPONENTS_INPUT_HPP
+#define WINDOW_COMPONENTS_INPUT_HPP
+
+enum class Input
+{
+	NONE,
+	UP,
+	DOWN,
+	RIGHT,
+	LEFT
+};
+
+#endif

@@ -1,6 +1,8 @@
 #include <iostream>
 
 #include "Window/InputHandler.hpp"
+#include "Window/Systems/InputSystems.hpp"
+#include "Window/Components/Input.hpp"
 
 #include "Graphics/RenderWindow.hpp"
 #include "Graphics/Scene.hpp"
@@ -43,6 +45,7 @@ int main()
 
 	player.add_component<Node>(Vector3f{ 96.f, 96.f, 0.f }, Vector2f{ 27.f, 29.f });
 	RigidBody& player_body = player.add_component<RigidBody>();
+	player.add_component<Input>(Input::NONE);
 
 	EntityHandler tilemap = world.create();
 	tilemap.add_component<TileMap>(TileMap::LoadFromFile("stage_1.json"));
@@ -71,13 +74,15 @@ int main()
 	Camera& camera = player.add_component<Camera>(0, 0, window.get_size().x, window.get_size().y);
 
 	InputHandler input_handler;
-	input_handler.register_action("quit", Action{ Input::Window::Closed });
-	input_handler.register_action("resize", Action{ Input::Window::Resized });
+	input_handler.register_action("quit", Action{ InputEvent::Window::Closed });
+	input_handler.register_action("resize", Action{ InputEvent::Window::Resized });
 
-	input_handler.register_action("right", Action{ Input::Keyboard::D });
-	input_handler.register_action("left", Action{ Input::Keyboard::Q });
-	input_handler.register_action("up", Action{ Input::Keyboard::Z });
-	input_handler.register_action("down", Action{ Input::Keyboard::S });
+	input_handler.register_action("right", Action{ InputEvent::Keyboard::D });
+	input_handler.register_action("left", Action{ InputEvent::Keyboard::Q });
+	input_handler.register_action("up", Action{ InputEvent::Keyboard::Z });
+	input_handler.register_action("down", Action{ InputEvent::Keyboard::S });
+
+	world.add_system<InputSystem>(input_handler);
 
 	while (window.is_open())
 	{
