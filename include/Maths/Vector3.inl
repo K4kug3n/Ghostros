@@ -72,3 +72,15 @@ inline Vector3<T> operator-(const Vector3<T>& lhs, const Vector3<T>& rhs)
 {
 	return Vector3<T>{ lhs.x - rhs.x, lhs.y - rhs.y, lhs.z - rhs.z };
 }
+
+template<typename T>
+bool operator==(const Vector3<T>& lhs, const Vector3<T>& rhs)
+{
+	return (lhs.x == rhs.x) && (lhs.y == rhs.y) && (lhs.z == rhs.z);
+}
+
+template<typename T>
+bool operator!=(const Vector3<T>& lhs, const Vector3<T>& rhs)
+{
+	return !(lhs == rhs);
+}

@@ -97,3 +97,15 @@ Vector2<T> operator/(T coeff, const Vector2<T>& rhs)
 {
 	return rhs / coeff;
 }
+
+template<typename T>
+bool operator==(const Vector2<T>& lhs, const Vector2<T>& rhs)
+{
+	return (lhs.x == rhs.x) && (lhs.y == rhs.y);
+}
+
+template<typename T>
+bool operator!=(const Vector2<T>& lhs, const Vector2<T>& rhs)
+{
+	return !(lhs == rhs);
+}

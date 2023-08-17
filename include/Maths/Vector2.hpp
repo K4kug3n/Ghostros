@@ -54,6 +54,12 @@ Vector2<T> operator/(const Vector2<T>& lhs, T coeff);
 template <typename T>
 Vector2<T> operator/(T coeff, const Vector2<T>& rhs);
 
+template<typename T>
+bool operator==(const Vector2<T>& lhs, const Vector2<T>& rhs);
+
+template<typename T>
+bool operator!=(const Vector2<T>& lhs, const Vector2<T>& rhs);
+
 #include "Maths/Vector2.inl"
 
 #endif

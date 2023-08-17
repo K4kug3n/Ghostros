@@ -41,6 +41,12 @@ Vector3<T> operator+(const Vector3<T>& lhs, const Vector3<T>& rhs);
 template <typename T>
 Vector3<T> operator-(const Vector3<T>& lhs, const Vector3<T>& rhs);
 
+template<typename T>
+bool operator==(const Vector3<T>& lhs, const Vector3<T>& rhs);
+
+template<typename T>
+bool operator!=(const Vector3<T>& lhs, const Vector3<T>& rhs);
+
 #include "Maths/Vector3.inl"
 
 #endif
