@@ -2,7 +2,7 @@
 #include "World.hpp"
 
 template<typename T, typename ...Args>
-inline T& World::add_system(Args ...args)
+inline T& World::add_system(Args&& ...args)
 {
 	static_assert(std::is_base_of<System, T>());
 	std::unique_ptr<T> item_ptr = std::make_unique<T>(*this, std::forward<Args>(args)...);
