@@ -3,12 +3,12 @@
 
 #include "ECS/System.hpp"
 
-class World;
+#include "Graphics/RenderWindow.hpp"
 
 class RenderSystem : public System
 {
 public:
-	RenderSystem(World& world);
+	RenderSystem(World& world, RenderWindow& window);
 	RenderSystem(RenderSystem&&) = default;
 	RenderSystem(const RenderSystem&) = delete;
 	~RenderSystem() = default;
@@ -17,6 +17,9 @@ public:
 
 	RenderSystem& operator=(RenderSystem&&) = default;
 	RenderSystem& operator=(const RenderSystem&) = delete;
+
+private:
+	RenderWindow& m_window;
 };
 
 #endif

@@ -34,7 +34,6 @@ int main()
 	PhysicsSpace& space = world.add_system<PhysicsSpace>();
 	space.set_gravity({ 0.f, 98.1f });
 
-	world.add_system<RenderSystem>();
 	world.add_system<CollisionTrigger>();
 	EntityHandler player = world.create();
 
@@ -74,6 +73,7 @@ int main()
 	);
 	
 	RenderWindow window{ 640, 480, "NotSureYet" };
+	world.add_system<RenderSystem>(window);
 	Camera& camera = player.add_component<Camera>(0, 0, window.get_size().x, window.get_size().y);
 
 	InputHandler input_handler;
