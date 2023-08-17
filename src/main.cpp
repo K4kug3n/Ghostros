@@ -16,8 +16,10 @@
 #include "ECS/EntityHandler.hpp"
 #include "ECS/Components/Node.hpp"
 #include "ECS/Components/Sprite.hpp"
+#include "ECS/Components/State.hpp"
 #include "ECS/Components/CollisionCallback.hpp"
 #include "ECS/Systems/CollisionTrigger.hpp"
+#include "ECS/Systems/PlayerSystem.hpp"
 
 #include "Physics/Systems/PhysicsSpace.hpp"
 #include "Physics/Components/RigidBody.hpp"
@@ -44,8 +46,9 @@ int main()
 	ghost_sprite.play("idle");
 
 	player.add_component<Node>(Vector3f{ 96.f, 96.f, 0.f }, Vector2f{ 27.f, 29.f });
-	RigidBody& player_body = player.add_component<RigidBody>();
+	player.add_component<RigidBody>();
 	player.add_component<Input>(Input::NONE);
+	player.add_component<State>(State::IDLE);
 
 	EntityHandler tilemap = world.create();
 	tilemap.add_component<TileMap>(TileMap::LoadFromFile("stage_1.json"));
@@ -83,6 +86,7 @@ int main()
 	input_handler.register_action("down", Action{ InputEvent::Keyboard::S });
 
 	world.add_system<InputSystem>(input_handler);
+	world.add_system<PlayerSystem>();
 
 	while (window.is_open())
 	{
@@ -95,22 +99,6 @@ int main()
 		if (input_handler.is_active("resize"))
 		{
 			camera.set_size(window.get_size());
-		}
-		if (input_handler.is_active("up"))
-		{
-			player_body.jump = true;
-		}
-		if (input_handler.is_active("down"))
-		{
-			player_body.velocity.y += 10.f;
-		}
-		if (input_handler.is_active("left"))
-		{
-			player_body.velocity.x -= 10.f;
-		}
-		if (input_handler.is_active("right"))
-		{
-			player_body.velocity.x += 10.f;
 		}
 
 		window.clear();
