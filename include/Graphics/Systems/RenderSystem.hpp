@@ -13,7 +13,7 @@ public:
 	RenderSystem(const RenderSystem&) = delete;
 	~RenderSystem() = default;
 
-	void update(double delta_t) override;
+	void update(double) override;
 
 	RenderSystem& operator=(RenderSystem&&) = default;
 	RenderSystem& operator=(const RenderSystem&) = delete;
