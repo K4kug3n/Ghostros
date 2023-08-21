@@ -26,5 +26,5 @@ inline T& EntityHandler::get() const
 template<typename T>
 inline void EntityHandler::remove() const
 {
-	m_world->get_registry().remove<T>(m_entity);
+	m_world->remove<T>(m_entity);
 }

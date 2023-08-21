@@ -13,6 +13,12 @@ inline T& World::add_system(Args&& ...args)
 	return item_ref;
 }
 
+template<typename T>
+inline void World::remove(entt::entity entity)
+{
+	m_registry.remove<T>(entity);
+}
+
 template<typename ...Types>
 inline entt::view< entt::get_t<Types...>> World::view()
 {

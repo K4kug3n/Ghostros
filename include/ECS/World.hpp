@@ -20,6 +20,10 @@ public:
 	T& add_system(Args&&... args);
 	
 	EntityHandler create();
+
+	template<typename T>
+	void remove(entt::entity entity);
+
 	void update(RenderWindow&, InputHandler&, double delta_time) override;
 
 	template<typename... Types>
