@@ -7,9 +7,10 @@
 #include "Graphics/RenderWindow.hpp"
 #include "Graphics/Scene.hpp"
 #include "Graphics/TextureCache.hpp"
+#include "Graphics/Systems/AnimationSystem.hpp"
 #include "Graphics/Systems/RenderSystem.hpp"
 #include "Graphics/Components/Camera.hpp"
-#include "Graphics/Components/AnimatedSprite.hpp"
+#include "Graphics/Components/Animation.hpp"
 #include "Graphics/Components/Tilemap.hpp"
 
 #include "ECS/World.hpp"
@@ -40,9 +41,8 @@ int main()
 	TextureCache texture_cache;
 
 	TextureHandle player_texture = texture_cache.get("sprites/ghost-1.png");
-	AnimatedSprite& ghost_sprite = player.add_component<AnimatedSprite>();
-	ghost_sprite.add_animation("idle", std::move(player_texture), 1, 3, 3.f, AnimationRepetition::REPEAT);
-	ghost_sprite.play("idle");
+	player.add_component<Animation>(player_texture->get_size(), Vector2u{ 3u, 1u }, 3.f, AnimationRepetition::REPEAT);
+	player.add_component<Sprite>(std::move(player_texture));
 
 	player.add_component<Node>(Vector3f{ 96.f, 96.f, 0.f }, Vector2f{ 27.f, 29.f });
 	player.add_component<RigidBody>();
@@ -64,17 +64,16 @@ int main()
 		{ 
 			self.remove<StaticBody>();
 			self.remove<Collision>();
-			self.remove<Sprite>();
 
-			AnimatedSprite& sprite = self.add_component<AnimatedSprite>();
-			sprite.add_animation("up", flag_texture, 1, 5, 1.f);
-			sprite.play("up");
+			self.add_component<Animation>(flag_texture->get_size(), Vector2u{ 5u, 1u }, 1.f);
 		}
 	);
 	
 	RenderWindow window{ 640, 480, "NotSureYet" };
 	world.add_system<RenderSystem>(window);
 	Camera& camera = player.add_component<Camera>(0, 0, window.get_size().x, window.get_size().y);
+
+	world.add_system<AnimationSystem>();
 
 	InputHandler input_handler;
 	input_handler.register_action("quit", Action{ InputEvent::Window::Closed });

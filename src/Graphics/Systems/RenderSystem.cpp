@@ -1,7 +1,6 @@
 #include "Graphics/Systems/RenderSystem.hpp"
 
 #include "Graphics/RenderWindow.hpp"
-#include "Graphics/Components/AnimatedSprite.hpp"
 #include "Graphics/Components/TileMap.hpp"
 #include "Graphics/Components/Camera.hpp"
 
@@ -40,18 +39,6 @@ void RenderSystem::update(double delta_t)
 	sprite_view.each(
 		[this](const Node& node, Sprite& sprite)
 		{
-			sprite.set_position(node.get_position());
-			sprite.set_size(node.get_size().as<unsigned>());
-			m_window.draw(sprite.get_handle());
-		}
-	);
-
-	auto animated_sprite_view = m_world.view<const Node, AnimatedSprite>();
-	animated_sprite_view.each(
-		[this, delta_t](const Node& node, AnimatedSprite& animated_sprite)
-		{
-			animated_sprite.update(delta_t);
-			Sprite& sprite = animated_sprite.get_frame();
 			sprite.set_position(node.get_position());
 			sprite.set_size(node.get_size().as<unsigned>());
 			m_window.draw(sprite.get_handle());
