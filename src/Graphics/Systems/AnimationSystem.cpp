@@ -3,7 +3,7 @@
 #include "ECS/World.hpp"
 
 #include "Graphics/Components/Animation.hpp"
-#include "ECS/Components/Sprite.hpp"
+#include "Graphics/Components/Sprite.hpp"
 
 AnimationSystem::AnimationSystem(World& world)
 	: System(world)

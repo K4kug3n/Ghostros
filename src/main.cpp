@@ -14,11 +14,11 @@
 #include "Graphics/Components/Animation.hpp"
 #include "Graphics/Components/Tilemap.hpp"
 #include "Graphics/Components/StateAnimation.hpp"
+#include "Graphics/Components/Sprite.hpp"
 
 #include "ECS/World.hpp"
 #include "ECS/EntityHandler.hpp"
 #include "ECS/Components/Node.hpp"
-#include "ECS/Components/Sprite.hpp"
 #include "ECS/Components/State.hpp"
 #include "ECS/Components/CollisionCallback.hpp"
 #include "ECS/Systems/CollisionTrigger.hpp"

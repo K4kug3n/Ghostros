@@ -1,4 +1,4 @@
-#include "ECS/Components/Sprite.hpp"
+#include "Graphics/Components/Sprite.hpp"
 
 #include "Maths/Vector3.hpp"
 

@@ -3,9 +3,9 @@
 #include "Graphics/RenderWindow.hpp"
 #include "Graphics/Components/TileMap.hpp"
 #include "Graphics/Components/Camera.hpp"
+#include "Graphics/Components/Sprite.hpp"
 
 #include "ECS/Components/Node.hpp"
-#include "ECS/Components/Sprite.hpp"
 #include "ECS/World.hpp"
 
 RenderSystem::RenderSystem(World& world, RenderWindow& window)
