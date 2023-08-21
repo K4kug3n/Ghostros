@@ -38,6 +38,19 @@ void PlayerSystem::update(double)
 			default:
 				break;
 			}
+
+			if (body.velocity.x > 0.f)
+			{
+				state = State::RUN_RIGHT;
+			}
+			else if (body.velocity.x < 0.f)
+			{
+				state = State::RUN_LEFT;
+			}
+			else
+			{
+				state = State::IDLE;
+			}
 		}
 	);
 }
