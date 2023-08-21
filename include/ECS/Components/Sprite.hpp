@@ -21,6 +21,7 @@ public:
 	const sf::Sprite& get_handle() const;
 	void set_position(const Vector3f& position);
 	void set_size(const Vector2u& size);
+	void set_texture(TextureHandle texture);
 	void set_texture_rect(const Vector2u& top_left, Vector2u size);
 
 	Sprite& operator=(Sprite&&) = default;

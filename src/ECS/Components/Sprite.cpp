@@ -4,7 +4,7 @@
 
 Sprite::Sprite(TextureHandle texture)
 	: m_texture(std::move(texture))
-	, m_size(m_texture->get_width(), m_texture->get_height())
+	, m_size(m_texture->get_size())
 	, m_sprite(m_texture->get_handle())
 {
 }
@@ -24,6 +24,13 @@ void Sprite::set_size(const Vector2u& size)
 	const Vector2f factor = size.as<float>() / m_size.as<float>();
 
 	m_sprite.setScale(factor.x, factor.y);
+}
+
+void Sprite::set_texture(TextureHandle texture)
+{
+	m_size = texture->get_size();
+	m_sprite.setTexture(texture->get_handle());
+	m_texture = std::move(texture);
 }
 
 void Sprite::set_texture_rect(const Vector2u& top_left, Vector2u size)
