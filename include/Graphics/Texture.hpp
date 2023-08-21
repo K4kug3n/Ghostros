@@ -5,6 +5,9 @@
 
 #include <SFML/Graphics/Texture.hpp>
 
+template<typename T> class Vector2;
+using Vector2u = Vector2<unsigned int>;
+
 class Texture
 {
 public:
@@ -16,6 +19,7 @@ public:
 
 	const sf::Texture& get_handle() const;
 	unsigned get_height() const;
+	Vector2u get_size() const;
 	unsigned get_width() const;
 
 	Texture& operator=(const Texture&) = delete;
