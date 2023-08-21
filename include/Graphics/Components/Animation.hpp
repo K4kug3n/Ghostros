@@ -16,7 +16,7 @@ class Animation
 public:
 	Animation() = delete;
 	Animation(const Vector2u& sprite_size, Vector2u nb_frames, double duration, AnimationRepetition repetition = AnimationRepetition::SINGLE);
-	Animation(const Animation&) = delete;
+	Animation(const Animation&) = default;
 	Animation(Animation&&) = default;
 	~Animation() = default;
 
@@ -28,7 +28,7 @@ public:
 	double current_frame_duration;
 	Vector2u current_frame_position;
 
-	Animation& operator=(const Animation&) = delete;
+	Animation& operator=(const Animation&) = default;
 	Animation& operator=(Animation&&) = default;
 };
 
