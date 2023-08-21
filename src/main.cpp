@@ -8,10 +8,12 @@
 #include "Graphics/Scene.hpp"
 #include "Graphics/TextureCache.hpp"
 #include "Graphics/Systems/AnimationSystem.hpp"
+#include "Graphics/Systems/StateAnimationSystem.hpp"
 #include "Graphics/Systems/RenderSystem.hpp"
 #include "Graphics/Components/Camera.hpp"
 #include "Graphics/Components/Animation.hpp"
 #include "Graphics/Components/Tilemap.hpp"
+#include "Graphics/Components/StateAnimation.hpp"
 
 #include "ECS/World.hpp"
 #include "ECS/EntityHandler.hpp"
@@ -40,9 +42,14 @@ int main()
 
 	TextureCache texture_cache;
 
-	TextureHandle player_texture = texture_cache.get("sprites/ghost-1.png");
-	player.add_component<Animation>(player_texture->get_size(), Vector2u{ 3u, 1u }, 3.f, AnimationRepetition::REPEAT);
-	player.add_component<Sprite>(std::move(player_texture));
+	TextureHandle left_texture = texture_cache.get("sprites/left_ghost.png");
+	TextureHandle right_texture = texture_cache.get("sprites/right_ghost.png");
+	TextureHandle idle_texture = texture_cache.get("sprites/idle_ghost.png");
+	StateAnimation& state_animation = player.add_component<StateAnimation>();
+	state_animation.add_animation(State::RUN_LEFT, { left_texture->get_size(), Vector2u{ 3u, 1u }, 3.f, AnimationRepetition::REPEAT }, left_texture);
+	state_animation.add_animation(State::RUN_RIGHT, { right_texture->get_size(), Vector2u{ 3u, 1u }, 3.f, AnimationRepetition::REPEAT }, right_texture);
+	state_animation.add_animation(State::IDLE, { idle_texture->get_size(), Vector2u{ 3u, 1u }, 3.f, AnimationRepetition::REPEAT }, idle_texture);
+	player.add_component<Sprite>(std::move(left_texture));
 
 	player.add_component<Node>(Vector3f{ 96.f, 96.f, 0.f }, Vector2f{ 27.f, 29.f });
 	player.add_component<RigidBody>();
@@ -74,6 +81,7 @@ int main()
 	Camera& camera = player.add_component<Camera>(0, 0, window.get_size().x, window.get_size().y);
 
 	world.add_system<AnimationSystem>();
+	world.add_system<StateAnimationSystem>();
 
 	InputHandler input_handler;
 	input_handler.register_action("quit", Action{ InputEvent::Window::Closed });
