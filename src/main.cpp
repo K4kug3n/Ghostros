@@ -38,6 +38,10 @@ int main()
 	space.set_gravity({ 0.f, 98.1f });
 
 	world.add_system<CollisionTrigger>();
+	world.add_system<AnimationSystem>();
+	world.add_system<StateAnimationSystem>();
+	world.add_system<PlayerSystem>();
+
 	EntityHandler player = world.create();
 
 	TextureCache texture_cache;
@@ -80,9 +84,6 @@ int main()
 	world.add_system<RenderSystem>(window);
 	Camera& camera = player.add_component<Camera>(0, 0, window.get_size().x, window.get_size().y);
 
-	world.add_system<AnimationSystem>();
-	world.add_system<StateAnimationSystem>();
-
 	InputHandler input_handler;
 	input_handler.register_action("quit", Action{ InputEvent::Window::Closed });
 	input_handler.register_action("resize", Action{ InputEvent::Window::Resized });
@@ -93,7 +94,6 @@ int main()
 	input_handler.register_action("down", Action{ InputEvent::Keyboard::S });
 
 	world.add_system<InputSystem>(input_handler);
-	world.add_system<PlayerSystem>();
 
 	while (window.is_open())
 	{
