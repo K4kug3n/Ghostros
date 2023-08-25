@@ -12,7 +12,7 @@
 
 #include "Graphics/Components/TileMap.hpp"
 
-bool tilemap_collsion(Vector3f& new_pos, const Vector3f& old_pos, const Vector2f& size, RigidBody& body, const TileMap& tilemap)
+bool tilemap_collsion(Vector3f& new_pos, const Vector3f& old_pos, const Vector2f& size, const TileMap& tilemap)
 {
 	const AABB body_AABB{ old_pos.xy() + size / 2.f, size / 2.f };
 	const Vector3f movement = new_pos - old_pos;
@@ -76,7 +76,7 @@ void resolve_tilemap_collision(Vector3f& new_pos, const Vector3f& old_pos, const
 	const Vector2f movement = new_pos.xy() - old_pos.xy();
 	Vector3f partial_pos{ old_pos.x, old_pos.y + movement.y, old_pos.z };
 
-	if (tilemap_collsion(partial_pos, old_pos, size, body, tilemap))
+	if (tilemap_collsion(partial_pos, old_pos, size, tilemap))
 	{
 		body.velocity.y = 0.f;
 		if (movement.y > 0.f)
@@ -84,9 +84,16 @@ void resolve_tilemap_collision(Vector3f& new_pos, const Vector3f& old_pos, const
 			body.on_ground = true;
 		}
 	}
+	else // Not colliding on y
+	{
+		if (movement.y > 0.f) // Falling
+		{
+			body.on_ground = false;
+		}
+	}
 	
 	partial_pos.x += movement.x;
-	if (tilemap_collsion(partial_pos, old_pos, size, body, tilemap))
+	if (tilemap_collsion(partial_pos, old_pos, size, tilemap))
 	{
 		body.velocity.x = 0.f;
 	}
@@ -141,51 +148,18 @@ void PhysicsSpace::step(float dt)
 		}
 		 
 		node.set_position(new_pos);
-	}
+	}	
 
-	for (auto [id_a, node_a, _] : body_view.each()) // Entity collision
-	{
-		for (auto [id_b, node_b, _] : body_view.each())
-		{
-			if (id_a == id_b)
-			{
-				continue;
-			}
+	check_existing_collision();
 
-			AABB aabb_a{ node_a.get_center().xy(), node_a.get_size() / 2.f };
-			AABB aabb_b{ node_b.get_center().xy(), node_b.get_size() / 2.f };
+	check_rigid_collision();
 
-			if (aabb_a.is_intersecting(aabb_b))
-			{
-				EntityHandler handler_a{ m_world, id_a };
-				EntityHandler handler_b{ m_world, id_b };
+	check_static_collision();
+}
 
-				handler_a.add_or_replace_component<Collision>(Collision{ handler_b, node_a.get_position().xy() });
-				handler_b.add_or_replace_component<Collision>(Collision{ handler_a, node_b.get_position().xy() });
-			}
-		}
-	}
-
-	auto static_view = m_world.view<Node, StaticBody>(); // Static collision
-	for (auto [id_a, node_a] : static_view.each())
-	{
-		for (auto [id_b, node_b, _] : body_view.each())
-		{
-			AABB aabb_a{ node_a.get_center().xy(), node_a.get_size() / 2.f };
-			AABB aabb_b{ node_b.get_center().xy(), node_b.get_size() / 2.f };
-
-			if (aabb_a.is_intersecting(aabb_b))
-			{
-				EntityHandler handler_a{ m_world, id_a };
-				EntityHandler handler_b{ m_world, id_b };
-
-				handler_a.add_or_replace_component<Collision>(Collision{ handler_b, node_a.get_position().xy() });
-				handler_b.add_or_replace_component<Collision>(Collision{ handler_a, node_b.get_position().xy() });
-			}
-		}
-	}
-
-	auto collision_view = m_world.view<Node, Collision>(); // Remove not revelant collision
+void PhysicsSpace::check_existing_collision()
+{
+	auto collision_view = m_world.view<Node, Collision>();
 	for (auto [id_a, node_a, collision] : collision_view.each())
 	{
 		AABB aabb_a{ node_a.get_center().xy(), node_a.get_size() / 2.f };
@@ -198,6 +172,61 @@ void PhysicsSpace::step(float dt)
 		{
 			EntityHandler handler_a{ m_world, id_a };
 			handler_a.remove<Collision>();
+		}
+	}
+}
+
+void PhysicsSpace::check_rigid_collision()
+{
+	auto body_view = m_world.view<Node, RigidBody>();
+	for (auto [id_a, node_a, _] : body_view.each())
+	{
+		AABB aabb_a{ node_a.get_center().xy(), node_a.get_size() / 2.f };
+		for (auto [id_b, node_b, _] : body_view.each())
+		{
+			if (id_a == id_b)
+			{
+				continue;
+			}
+
+			AABB aabb_b{ node_b.get_center().xy(), node_b.get_size() / 2.f };
+
+			if (aabb_a.is_intersecting(aabb_b))
+			{
+				EntityHandler handler_a{ m_world, id_a };
+				EntityHandler handler_b{ m_world, id_b };
+
+				handler_a.add_or_replace_component<Collision>(Collision{ handler_b, node_a.get_position().xy() });
+				handler_b.add_or_replace_component<Collision>(Collision{ handler_a, node_b.get_position().xy() });
+			}
+		}
+	}
+}
+
+void PhysicsSpace::check_static_collision()
+{
+	auto static_view = m_world.view<Node, StaticBody>();
+	auto body_view = m_world.view<Node, RigidBody>();
+	for (auto [id_a, node_a] : static_view.each())
+	{
+		AABB aabb_a{ node_a.get_center().xy(), node_a.get_size() / 2.f };
+		for (auto [id_b, node_b, _] : body_view.each())
+		{
+			if (id_a == id_b)
+			{
+				continue;
+			}
+
+			AABB aabb_b{ node_b.get_center().xy(), node_b.get_size() / 2.f };
+
+			if (aabb_a.is_intersecting(aabb_b))
+			{
+				EntityHandler handler_a{ m_world, id_a };
+				EntityHandler handler_b{ m_world, id_b };
+
+				handler_a.add_or_replace_component<Collision>(Collision{ handler_b, node_a.get_position().xy() });
+				handler_b.add_or_replace_component<Collision>(Collision{ handler_a, node_b.get_position().xy() });
+			}
 		}
 	}
 }

@@ -7,6 +7,7 @@
 class World;
 class TileMap;
 class RigidBody;
+class AABB;
 template<typename T> class Vector3;
 using Vector3f = Vector3<float>;
 
@@ -26,6 +27,9 @@ public:
 	PhysicsSpace& operator=(const PhysicsSpace&) = delete;
 
 private:
+	void check_existing_collision();
+	void check_rigid_collision();
+	void check_static_collision();
 
 	Vector2f m_gravity;
 };
