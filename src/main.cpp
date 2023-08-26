@@ -71,8 +71,11 @@ int main()
 	Sprite& flag_sprite = win_trigger.add_component<Sprite>(flag_texture);
 	flag_sprite.set_texture_rect({ 0, 0 }, { 23, 96 });
 	win_trigger.add_component<CollisionCallback>(
-		[flag_texture](const EntityHandler& self, const EntityHandler&, const Vector2f&)
-		{ 
+		[flag_texture](const EntityHandler& self, const EntityHandler& other, const Vector2f&)
+		{
+			other.remove<Input>();
+			other.get<State>() = State::IDLE;
+
 			self.remove<StaticBody>();
 			self.remove<Collision>();
 
@@ -80,7 +83,7 @@ int main()
 		}
 	);
 	
-	RenderWindow window{ 640, 480, "NotSureYet" };
+	RenderWindow window{ 640, 480, "Casper Bros" };
 	world.add_system<RenderSystem>(window);
 	Camera& camera = player.add_component<Camera>(0, 0, window.get_size().x, window.get_size().y);
 
