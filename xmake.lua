@@ -1,4 +1,4 @@
-set_project("CasperBros")
+set_project("Ghostros")
 
 add_requires("sfml", "entt", "nlohmann_json")
 

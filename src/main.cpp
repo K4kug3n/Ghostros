@@ -46,13 +46,15 @@ int main()
 
 	TextureCache texture_cache;
 
-	TextureHandle left_texture = texture_cache.get("sprites/left_ghost.png");
-	TextureHandle right_texture = texture_cache.get("sprites/right_ghost.png");
-	TextureHandle idle_texture = texture_cache.get("sprites/idle_ghost.png");
 	StateAnimation& state_animation = player.add_component<StateAnimation>();
-	state_animation.add_animation(State::RUN_LEFT, { left_texture->get_size(), Vector2u{ 3u, 1u }, 3.f, AnimationRepetition::REPEAT }, left_texture);
+	TextureHandle right_texture = texture_cache.get("sprites/right_ghost.png");
 	state_animation.add_animation(State::RUN_RIGHT, { right_texture->get_size(), Vector2u{ 3u, 1u }, 3.f, AnimationRepetition::REPEAT }, right_texture);
+
+	TextureHandle idle_texture = texture_cache.get("sprites/idle_ghost.png");
 	state_animation.add_animation(State::IDLE, { idle_texture->get_size(), Vector2u{ 3u, 1u }, 3.f, AnimationRepetition::REPEAT }, idle_texture);
+
+	TextureHandle left_texture = texture_cache.get("sprites/left_ghost.png");
+	state_animation.add_animation(State::RUN_LEFT, { left_texture->get_size(), Vector2u{ 3u, 1u }, 3.f, AnimationRepetition::REPEAT }, left_texture);
 	player.add_component<Sprite>(std::move(left_texture));
 
 	player.add_component<Node>(Vector3f{ 96.f, 96.f, 0.f }, Vector2f{ 27.f, 29.f });
@@ -83,7 +85,7 @@ int main()
 		}
 	);
 	
-	RenderWindow window{ 640, 480, "Casper Bros" };
+	RenderWindow window{ 640, 480, "Ghostros" };
 	world.add_system<RenderSystem>(window);
 	Camera& camera = player.add_component<Camera>(0, 0, window.get_size().x, window.get_size().y);
 

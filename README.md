@@ -1,4 +1,4 @@
-# Casper Bros
+# Ghostros
 
 ## Goal
 
