@@ -2,7 +2,6 @@
 
 #include "Graphics/RenderWindow.hpp"
 #include "Graphics/Components/TileMap.hpp"
-#include "Graphics/Components/Camera.hpp"
 #include "Graphics/Components/Sprite.hpp"
 
 #include "ECS/Components/Node.hpp"
@@ -16,17 +15,6 @@ RenderSystem::RenderSystem(World& world, RenderWindow& window)
 
 void RenderSystem::update(double)
 {
-	auto camera_view = m_world.view<const Node, Camera>();
-	camera_view.each(
-		[this](const Node& node, Camera& camera)
-		{
-			sf::View& view = camera.get_view();
-			const Vector3f& position = node.get_position();
-			view.setCenter(position.x, position.y);
-			m_window.set_camera(camera);
-		}
-	);
-
 	auto tilemap_view = m_world.view<const Node, TileMap>();
 	tilemap_view.each(
 		[this](const Node&, TileMap& tilemap)

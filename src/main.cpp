@@ -11,6 +11,7 @@
 #include "Graphics/Systems/AnimationSystem.hpp"
 #include "Graphics/Systems/StateAnimationSystem.hpp"
 #include "Graphics/Systems/RenderSystem.hpp"
+#include "Graphics/Systems/CameraSystem.hpp"
 #include "Graphics/Components/Camera.hpp"
 #include "Graphics/Components/Animation.hpp"
 #include "Graphics/Components/Tilemap.hpp"
@@ -39,10 +40,10 @@ int main()
 	
 	RenderWindow window{ 640, 480, "Ghostros" };
 	world.add_system<RenderSystem>(window);
+	world.add_system<CameraSystem>(window);
 
 	InputHandler input_handler;
 	input_handler.register_action("quit", Action{ InputEvent::Window::Closed });
-	input_handler.register_action("resize", Action{ InputEvent::Window::Resized });
 
 	input_handler.register_action("right", Action{ InputEvent::Keyboard::D });
 	input_handler.register_action("left", Action{ InputEvent::Keyboard::Q });
@@ -58,10 +59,6 @@ int main()
 		if (input_handler.is_active("quit"))
 		{
 			window.close();
-		}
-		if (input_handler.is_active("resize"))
-		{
-			//camera.set_size(window.get_size());
 		}
 
 		window.clear();
