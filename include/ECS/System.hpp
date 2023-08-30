@@ -11,7 +11,7 @@ public:
 	System(World& world);
 	System(const System&) = delete;
 	System(System&&) = default;
-	~System() = default;
+	virtual ~System();
 
 	virtual void update(double delta_time) = 0;
 
