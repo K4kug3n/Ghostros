@@ -3,12 +3,11 @@
 
 #include <entt/entity/registry.hpp>
 
-#include "Core/SceneItem.hpp"
 #include "ECS/System.hpp"
 
 class EntityHandler;
 
-class World : public SceneItem
+class World
 {
 public:
 	World() = default;
@@ -24,7 +23,7 @@ public:
 	template<typename T>
 	void remove(entt::entity entity);
 
-	void update(RenderWindow&, InputHandler&, double delta_time) override;
+	void update(double delta_time);
 
 	template<typename... Types>
 	entt::view< entt::get_t<Types...>> view();

@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include "Core/Scene.hpp"
+#include "Core/GameScene.hpp"
 
 #include "Window/InputHandler.hpp"
 #include "Window/Systems/InputSystems.hpp"
@@ -32,9 +32,9 @@
 
 int main()
 {
-	Scene game_scene;
+	GameScene game_scene;
 
-	World& world = game_scene.add_item<World>();
+	World& world = game_scene.world;
 	PhysicsSpace& space = world.add_system<PhysicsSpace>();
 	space.set_gravity({ 0.f, 98.1f });
 
@@ -115,7 +115,7 @@ int main()
 		}
 
 		window.clear();
-		game_scene.update(window, input_handler);
+		game_scene.update();
 		window.display();
 	}
 
