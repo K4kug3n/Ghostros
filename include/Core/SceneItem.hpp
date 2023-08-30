@@ -1,5 +1,5 @@
-#ifndef GRAPHICS_SCENEITEM_HPP
-#define GRAPHICS_SCENEITEM_HPP
+#ifndef CORE_SCENEITEM_HPP
+#define CORE_SCENEITEM_HPP
 
 class InputHandler;
 class RenderWindow;

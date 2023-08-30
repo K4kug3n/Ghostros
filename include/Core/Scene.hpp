@@ -1,5 +1,5 @@
-#ifndef GRAPHICS_SCENE_HPP
-#define GRAPHICS_SCENE_HPP
+#ifndef CORE_SCENE_HPP
+#define CORE_SCENE_HPP
 
 #include <vector>
 #include <memory>
@@ -30,7 +30,7 @@ private:
 	std::vector<std::unique_ptr<SceneItem>> m_items;
 };
 
-#include "Graphics/Scene.inl"
+#include "Core/Scene.inl"
 
 #endif
 

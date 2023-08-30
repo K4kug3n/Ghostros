@@ -1,11 +1,12 @@
 #include <iostream>
 
+#include "Core/Scene.hpp"
+
 #include "Window/InputHandler.hpp"
 #include "Window/Systems/InputSystems.hpp"
 #include "Window/Components/Input.hpp"
 
 #include "Graphics/RenderWindow.hpp"
-#include "Graphics/Scene.hpp"
 #include "Graphics/TextureCache.hpp"
 #include "Graphics/Systems/AnimationSystem.hpp"
 #include "Graphics/Systems/StateAnimationSystem.hpp"

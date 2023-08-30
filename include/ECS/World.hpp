@@ -3,7 +3,7 @@
 
 #include <entt/entity/registry.hpp>
 
-#include "Graphics/SceneItem.hpp"
+#include "Core/SceneItem.hpp"
 #include "ECS/System.hpp"
 
 class EntityHandler;

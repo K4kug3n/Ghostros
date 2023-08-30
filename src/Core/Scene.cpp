@@ -1,6 +1,6 @@
-#include "Graphics/Scene.hpp"
+#include "Core/Scene.hpp"
 
-#include "Graphics/SceneItem.hpp"
+#include "Core/SceneItem.hpp"
 
 Scene::Scene()
 	: m_clock()
