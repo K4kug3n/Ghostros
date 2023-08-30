@@ -51,6 +51,7 @@ void GameScene::load()
 	player.add_component<RigidBody>();
 	player.add_component<Input>(Input::NONE);
 	player.add_component<State>(State::IDLE);
+	player.add_component<Camera>();
 
 	EntityHandler tilemap = world.create();
 	tilemap.add_component<TileMap>(TileMap::LoadFromFile("stage_1.json"));
@@ -74,8 +75,6 @@ void GameScene::load()
 			self.add_component<Animation>(flag_texture->get_size(), Vector2u{ 5u, 1u }, 1.f);
 		}
 	);
-
-	Camera& camera = player.add_component<Camera>(0, 0, 640, 480);
 }
 
 void GameScene::unload()

@@ -9,9 +9,7 @@ using Vector2u = Vector2<unsigned>;
 class Camera
 {
 public:
-	Camera() = delete;
-	Camera(const Vector2u& center_pos, const Vector2u& size);
-	Camera(unsigned top_left_x, unsigned top_left_y, unsigned bottom_right_x, unsigned bottom_right_y);
+	Camera() = default;
 	Camera(const Camera&) = delete;
 	Camera(Camera&&) = default;
 	~Camera() = default;
