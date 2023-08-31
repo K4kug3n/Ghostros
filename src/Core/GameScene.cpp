@@ -1,5 +1,6 @@
 #include "Core/GameScene.hpp"
 
+#include "Window/Systems/InputSystems.hpp"
 #include "Window/Components/Input.hpp"
 
 #include "Physics/Systems/PhysicsSpace.hpp"
@@ -14,6 +15,8 @@
 #include "ECS/Components/CollisionCallback.hpp"
 #include "ECS/EntityHandler.hpp"
 
+#include "Graphics/Systems/RenderSystem.hpp"
+#include "Graphics/Systems/CameraSystem.hpp"
 #include "Graphics/Systems/AnimationSystem.hpp"
 #include "Graphics/Systems/StateAnimationSystem.hpp"
 #include "Graphics/Components/StateAnimation.hpp"
@@ -21,6 +24,12 @@
 #include "Graphics/Components/TileMap.hpp"
 #include "Graphics/Components/Camera.hpp"
 #include "Graphics/TextureCache.hpp"
+
+GameScene::GameScene(RenderWindow& window, InputHandler& input_handler)
+	: m_window(window)
+	, m_input_handler(input_handler)
+{
+}
 
 void GameScene::load()
 {
@@ -75,6 +84,10 @@ void GameScene::load()
 			self.add_component<Animation>(flag_texture->get_size(), Vector2u{ 5u, 1u }, 1.f);
 		}
 	);
+
+	world.add_system<RenderSystem>(m_window);
+	world.add_system<CameraSystem>(m_window);
+	world.add_system<InputSystem>(m_input_handler);
 }
 
 void GameScene::unload()

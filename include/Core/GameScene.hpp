@@ -8,7 +8,8 @@
 class GameScene : public Scene
 {
 public:
-	GameScene() = default;
+	GameScene() = delete;
+	GameScene(RenderWindow& window, InputHandler& input_handler);
 	GameScene(const GameScene&) = delete;
 	GameScene(GameScene&&) = default;
 	~GameScene() = default;
@@ -22,6 +23,8 @@ public:
 	GameScene& operator=(const GameScene&) = delete;
 	GameScene& operator=(GameScene&&) = default;
 private:
+	RenderWindow& m_window;
+	InputHandler& m_input_handler;
 };
 
 #endif
