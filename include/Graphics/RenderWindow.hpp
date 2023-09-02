@@ -24,6 +24,7 @@ public:
 	void close();
 	void display();
 	void draw(const sf::Drawable& drawable, const sf::RenderStates& states = sf::RenderStates::Default);
+	Vector2i get_mouse_position() const;
 	Vector2u get_size() const;
 	bool is_open() const;
 	std::optional<InputEvent::Event> poll_event();

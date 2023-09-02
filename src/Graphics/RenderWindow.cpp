@@ -28,6 +28,12 @@ void RenderWindow::draw(const sf::Drawable& drawable, const sf::RenderStates& st
 	m_handle.draw(drawable, states);
 }
 
+Vector2i RenderWindow::get_mouse_position() const
+{
+	sf::Vector2i mouse_pos = sf::Mouse::getPosition(m_handle);
+	return Vector2i{ mouse_pos.x, mouse_pos.y };
+}
+
 Vector2u RenderWindow::get_size() const
 {
 	const sf::Vector2u size = m_handle.getSize();
