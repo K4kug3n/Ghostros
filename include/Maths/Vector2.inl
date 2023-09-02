@@ -89,7 +89,7 @@ inline Vector2<T> operator/(const Vector2<T>& lhs, const Vector2<T>& rhs)
 template <typename T>
 Vector2<T> operator/(const Vector2<T>& lhs, T coeff)
 {
-	return lhs * (static_cast<T>(1) / coeff);
+	return Vector2<T>{ lhs.x / coeff, lhs.y / coeff };
 }
 
 template <typename T>
