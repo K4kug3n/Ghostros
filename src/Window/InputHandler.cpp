@@ -5,6 +5,11 @@
 InputHandler::InputHandler()
 {}
 
+bool InputHandler::is_active(const Action& action) const
+{
+	return action.is_active(m_pending_events);
+}
+
 bool InputHandler::is_active(const std::string& name) const
 {
 	auto it = m_registered_actions.find(name);

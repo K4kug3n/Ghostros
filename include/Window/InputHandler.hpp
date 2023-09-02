@@ -18,6 +18,7 @@ public:
 	InputHandler(const InputHandler&) = delete;
 	~InputHandler()= default;
 
+	bool is_active(const Action& action) const;
 	bool is_active(const std::string& name) const;
 	void update(RenderWindow& render_window);
 	void register_action(std::string name, Action action);
