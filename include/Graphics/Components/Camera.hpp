@@ -11,7 +11,7 @@ class Camera
 public:
 	Camera() = default;
 	Camera(const Camera&) = delete;
-	Camera(Camera&&) = default;
+	Camera(Camera&& other) noexcept;
 	~Camera() = default;
 
 	sf::View& get_view();
@@ -19,7 +19,7 @@ public:
 	void set_size(const Vector2u& size);
 
 	Camera& operator=(const Camera&) = delete;
-	Camera& operator=(Camera&&) = default;
+	Camera& operator=(Camera&& other) noexcept;
 
 private:
 	sf::View m_view;

@@ -18,7 +18,7 @@ public:
 	TileMap() = delete;
 	TileMap(unsigned cols, unsigned rows, std::vector<uint8_t> indices, TileSet tile_set);
 	TileMap(const TileMap&) = delete;
-	TileMap(TileMap&&) = default;
+	TileMap(TileMap&& other) noexcept;
 	~TileMap() = default;
 
 	void draw(RenderWindow& window);
@@ -30,7 +30,7 @@ public:
 	static TileMap LoadFromFile(const std::filesystem::path& filepath);
 
 	TileMap& operator=(const TileMap&) = delete;
-	TileMap& operator=(TileMap&&) = default;
+	TileMap& operator=(TileMap&& other) noexcept;
 
 private:
 	unsigned m_rows;

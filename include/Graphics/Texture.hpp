@@ -14,7 +14,7 @@ public:
 	Texture() = delete;
 	Texture(const std::filesystem::path& filepath);
 	Texture(const Texture&) = delete;
-	Texture(Texture&&) = default;
+	Texture(Texture&& other) noexcept;
 	~Texture() = default;
 
 	const sf::Texture& get_handle() const;
@@ -23,7 +23,7 @@ public:
 	unsigned get_width() const;
 
 	Texture& operator=(const Texture&) = delete;
-	Texture& operator=(Texture&&) = default;
+	Texture& operator=(Texture&& other) noexcept;
 
 private:
 	sf::Texture m_texture;

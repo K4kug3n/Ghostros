@@ -11,6 +11,11 @@ Texture::Texture(const std::filesystem::path& filepath)
 	}
 }
 
+Texture::Texture(Texture&& other) noexcept
+	: m_texture(std::move(other.m_texture))
+{
+}
+
 const sf::Texture& Texture::get_handle() const
 {
 	return m_texture;
@@ -29,4 +34,11 @@ Vector2u Texture::get_size() const
 unsigned Texture::get_width() const
 {
 	return m_texture.getSize().x;
+}
+
+Texture& Texture::operator=(Texture&& other) noexcept
+{
+	m_texture = std::move(other.m_texture);
+
+	return *this;
 }

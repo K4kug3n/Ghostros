@@ -43,6 +43,15 @@ TileMap::TileMap(unsigned cols, unsigned rows, std::vector<uint8_t> map, TileSet
 	}
 }
 
+TileMap::TileMap(TileMap&& other) noexcept
+	: m_cols(other.m_cols)
+	, m_rows(other.m_rows)
+	, m_indices(std::move(other.m_indices))
+	, m_vertices(std::move(other.m_vertices))
+	, m_tile_set(std::move(other.m_tile_set))
+{
+}
+
 void TileMap::draw(RenderWindow& window)
 {
 	window.draw(m_vertices, sf::RenderStates{ &m_tile_set.get_texture().get_handle() });
@@ -80,4 +89,15 @@ TileMap TileMap::LoadFromFile(const std::filesystem::path& filepath)
 	const json map_json = json::parse(map_file);
 
 	return TileMap{ map_json["cols"], map_json["rows"], map_json["map"], TileSet::LoadFromJson(map_json["tileset"]) };
+}
+
+TileMap& TileMap::operator=(TileMap&& other) noexcept
+{
+	m_cols = other.m_cols;
+	m_rows = other.m_rows;
+	m_indices = std::move(other.m_indices);
+	m_vertices = std::move(other.m_vertices);
+	m_tile_set = std::move(other.m_tile_set);
+
+	return *this;
 }
