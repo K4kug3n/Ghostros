@@ -22,9 +22,8 @@ void CameraSystem::update(double)
 		{
 			camera.set_size(window_size);
 
-			sf::View& view = camera.get_view();
-			const Vector3f& position = node.get_position();
-			view.setCenter(position.x, position.y);
+			camera.set_position(node.get_position().xy() - window_size.as<float>() / 2.f);
+
 			m_window.set_camera(camera);
 		}
 	);
