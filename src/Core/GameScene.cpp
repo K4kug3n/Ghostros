@@ -23,7 +23,7 @@
 #include "Graphics/Components/Sprite.hpp"
 #include "Graphics/Components/TileMap.hpp"
 #include "Graphics/Components/Camera.hpp"
-#include "Graphics/TextureCache.hpp"
+#include "Graphics/RessourceCache.hpp"
 
 GameScene::GameScene(RenderWindow& window, InputHandler& input_handler)
 	: m_window(window)
@@ -43,16 +43,16 @@ void GameScene::load()
 
 	EntityHandler player = world.create();
 
-	TextureCache texture_cache;
+	RessourceCache<Texture> texture_cache;
 
 	StateAnimation& state_animation = player.add_component<StateAnimation>();
-	TextureHandle right_texture = texture_cache.get("sprites/right_ghost.png");
+	RessourceHandle<Texture> right_texture = texture_cache.get("sprites/right_ghost.png");
 	state_animation.add_animation(State::RUN_RIGHT, { right_texture->get_size(), Vector2u{ 3u, 1u }, 3.f, AnimationRepetition::REPEAT }, right_texture);
 
-	TextureHandle idle_texture = texture_cache.get("sprites/idle_ghost.png");
+	RessourceHandle<Texture> idle_texture = texture_cache.get("sprites/idle_ghost.png");
 	state_animation.add_animation(State::IDLE, { idle_texture->get_size(), Vector2u{ 3u, 1u }, 3.f, AnimationRepetition::REPEAT }, idle_texture);
 
-	TextureHandle left_texture = texture_cache.get("sprites/left_ghost.png");
+	RessourceHandle<Texture> left_texture = texture_cache.get("sprites/left_ghost.png");
 	state_animation.add_animation(State::RUN_LEFT, { left_texture->get_size(), Vector2u{ 3u, 1u }, 3.f, AnimationRepetition::REPEAT }, left_texture);
 	player.add_component<Sprite>(std::move(left_texture));
 
@@ -69,7 +69,7 @@ void GameScene::load()
 	EntityHandler win_trigger = world.create();
 	win_trigger.add_component<Node>(Vector3f{ 1724.f, 576.f, 0.f }, Vector2f{ 69.f, 288.f });
 	win_trigger.add_flag<StaticBody>();
-	TextureHandle flag_texture = texture_cache.get("sprites/flag.png");
+	RessourceHandle<Texture> flag_texture = texture_cache.get("sprites/flag.png");
 	Sprite& flag_sprite = win_trigger.add_component<Sprite>(flag_texture);
 	flag_sprite.set_texture_rect({ 0, 0 }, { 23, 96 });
 	win_trigger.add_component<CollisionCallback>(

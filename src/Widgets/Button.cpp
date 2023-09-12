@@ -3,12 +3,13 @@
 #include "Window/InputHandler.hpp"
 
 #include "Graphics/RenderWindow.hpp"
+#include "Graphics/Texture.hpp"
 
 #include "Maths/Vector3.hpp"
 
 Button::Button(const std::string& text, Vector2u position, Vector2u size)
 	: Widget(position, size)
-	, m_sprite(TextureHandle{ std::make_shared<Texture>("widgets/button.png") })
+	, m_sprite(RessourceHandle<Texture>{ std::make_shared<Texture>("widgets/button.png") })
 	, m_text(text)
 	, m_on_click_callback([](){})
 {

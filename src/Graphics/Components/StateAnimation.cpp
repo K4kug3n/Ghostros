@@ -1,6 +1,6 @@
 #include "Graphics/Components/StateAnimation.hpp"
 
-void StateAnimation::add_animation(State state, Animation animation, TextureHandle texture)
+void StateAnimation::add_animation(State state, Animation animation, RessourceHandle<Texture> texture)
 {
 	m_data.emplace(state, StateAnimation::AnimationData{ animation, texture });
 }

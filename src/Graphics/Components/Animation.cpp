@@ -1,5 +1,7 @@
 #include "Graphics/Components/Animation.hpp"
 
+#include <memory>
+
 Animation::Animation(const Vector2u& sprite_size, Vector2u nb_frames, double duration, AnimationRepetition repetition)
 	: duration_per_frame(duration / (nb_frames.x * nb_frames.y))
 	, frame_size(sprite_size / nb_frames)

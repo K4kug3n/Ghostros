@@ -1,8 +1,6 @@
 #ifndef GRAPHICS_COMPONENTS_ANIMATION_HPP
 #define GRAPHICS_COMPONENTS_ANIMATION_HPP
 
-#include "Graphics/TextureHandle.hpp"
-
 #include "Maths/Vector2.hpp"
 
 enum class AnimationRepetition

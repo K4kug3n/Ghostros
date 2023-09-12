@@ -2,7 +2,9 @@
 
 #include "Maths/Vector3.hpp"
 
-Sprite::Sprite(TextureHandle texture)
+#include "Graphics/Texture.hpp"
+
+Sprite::Sprite(RessourceHandle<Texture> texture)
 	: m_texture(std::move(texture))
 	, m_size(m_texture->get_size())
 	, m_sprite(m_texture->get_handle())
@@ -33,7 +35,7 @@ void Sprite::set_size(const Vector2u& size)
 	m_sprite.setScale(factor.x, factor.y);
 }
 
-void Sprite::set_texture(TextureHandle texture)
+void Sprite::set_texture(RessourceHandle<Texture> texture)
 {
 	m_size = texture->get_size();
 	m_sprite.setTexture(texture->get_handle());
