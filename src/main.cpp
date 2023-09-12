@@ -1,9 +1,12 @@
 #include "Core/GameScene.hpp"
 #include "Core/MenuScene.hpp"
+#include "Core/SceneManager.hpp"
 
 #include "Window/InputHandler.hpp"
 
 #include "Graphics/RenderWindow.hpp"
+
+#include "Widgets/Button.hpp"
 
 int main()
 {	
@@ -17,11 +20,17 @@ int main()
 	input_handler.register_action("up", Action{ InputEvent::Keyboard::Z });
 	input_handler.register_action("down", Action{ InputEvent::Keyboard::S });
 
-	//GameScene game_scene{ window, input_handler };
-	//game_scene.load();
+	GameScene game_scene{ window, input_handler };
+	game_scene.load();
 
+	SceneManager scene_manager;
+	
 	MenuScene menu_scene{ window, input_handler };
 	menu_scene.load();
+	menu_scene.get_quit_button().on_click([&window]() { window.close(); });
+	menu_scene.get_play_button().on_click([&scene_manager, &game_scene]() { scene_manager.set_current_scene(game_scene); });
+
+	scene_manager.set_current_scene(menu_scene);
 
 	while (window.is_open())
 	{
@@ -33,8 +42,7 @@ int main()
 		}
 
 		window.clear();
-		//game_scene.update();
-		menu_scene.update();
+		scene_manager.update_scene();
 		window.display();
 	}
 
