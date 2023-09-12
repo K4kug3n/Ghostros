@@ -7,6 +7,8 @@
 
 #include "Widgets/LayoutWidget.hpp"
 
+class Button;
+
 class MenuScene : public Scene
 {
 public:
@@ -20,6 +22,9 @@ public:
 	void unload() override;
 	void update() override;
 
+	Button& get_play_button();
+	Button& get_quit_button();
+
 	MenuScene& operator=(const MenuScene&) = delete;
 	MenuScene& operator=(MenuScene&&) = default;
 private:
@@ -27,6 +32,8 @@ private:
 	InputHandler& m_input_handler;
 
 	LayoutWidget m_central_widget;
+	Button* m_play_button;
+	Button* m_quit_button;
 };
 
 #endif

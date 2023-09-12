@@ -6,11 +6,6 @@ Layout::~Layout()
 {
 }
 
-void Layout::add_widget(std::unique_ptr<Widget> widget)
-{
-	m_widgets.emplace_back(std::move(widget));
-}
-
 void Layout::draw(RenderWindow& render_window)
 {
 	for (auto&& widget_ptr : m_widgets)

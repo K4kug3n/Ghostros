@@ -19,7 +19,8 @@ public:
 	Layout(Layout&&) = default;
 	virtual ~Layout();
 
-	void add_widget(std::unique_ptr<Widget> widget);
+	template <typename T>
+	T* add_widget(std::unique_ptr<T> widget);
 
 	void draw(RenderWindow& render_window);
 	void update(InputHandler& input_handler, const Vector2u& position, const Vector2u& size);
@@ -32,5 +33,7 @@ protected:
 
 	std::vector<std::unique_ptr<Widget>> m_widgets;
 };
+
+#include "Widgets/Layout.inl"
 
 #endif
