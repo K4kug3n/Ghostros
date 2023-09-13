@@ -1,17 +1,20 @@
-#ifndef GRAPHICS_COMPONENTS_TEXT_HPP
-#define GRAPHICS_COMPONENTS_TEXT_HPP
+#ifndef GRAPHICS_TEXT_HPP
+#define GRAPHICS_TEXT_HPP
 
 #include <string>
 
 #include <SFML/Graphics/Text.hpp>
-#include <SFML/Graphics/Font.hpp>
 
 #include "Maths/Vector2.hpp"
+
+#include "Graphics/RessourceHandle.hpp"
+#include "Graphics/Font.hpp"
 
 class Text
 {
 public:
-	Text(const std::string& text);
+	Text(RessourceHandle<Font> font);
+	Text(RessourceHandle<Font> font, const std::string& text);
 	Text(Text&& other) noexcept;
 	Text(const Text&) = delete;
 	~Text() = default;
@@ -25,7 +28,7 @@ public:
 	Text& operator=(const Text&) = delete;
 
 private:
-	sf::Font m_font; // Should not be there
+	RessourceHandle<Font> m_font;
 	sf::Text m_handle;
 };
 

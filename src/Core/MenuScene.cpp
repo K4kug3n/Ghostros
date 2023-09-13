@@ -2,14 +2,13 @@
 
 #include "Window/Systems/InputSystems.hpp"
 
+#include "Graphics/Components/Camera.hpp"
 #include "Graphics/Systems/RenderSystem.hpp"
+#include "Graphics/RessourceHandle.hpp"
+#include "Graphics/Font.hpp"
 
 #include "Widgets/VerticalLayout.hpp"
 #include "Widgets/Button.hpp"
-
-#include "Graphics/Components/Camera.hpp"
-
-#include <iostream>
 
 MenuScene::MenuScene(RenderWindow& window, InputHandler& input_handler)
 	: m_window(window)
@@ -22,10 +21,13 @@ MenuScene::MenuScene(RenderWindow& window, InputHandler& input_handler)
 
 void MenuScene::load()
 {
+	RessourceHandle<Texture> button_texture{ std::make_shared<Texture>("widgets/button.png") };
+	RessourceHandle<Font> arial_font{ std::make_shared<Font>("fonts/arial.ttf") };
+
 	m_central_widget.set_size(m_window.get_size());
 
-	std::unique_ptr<Button> play_button = std::make_unique<Button>("Play");
-	std::unique_ptr<Button> quit_button = std::make_unique<Button>("Quit");
+	std::unique_ptr<Button> play_button = std::make_unique<Button>(Text{ arial_font, "Play" }, button_texture);
+	std::unique_ptr<Button> quit_button = std::make_unique<Button>(Text{ arial_font, "Quit"}, std::move(button_texture));
 
 	std::unique_ptr<VerticalLayout> layout = std::make_unique<VerticalLayout>();
 	m_play_button = layout->add_widget(std::move(play_button));

@@ -1,19 +1,19 @@
 #ifndef WIDGETS_BUTTON_HPP
 #define WIDGETS_BUTTON_HPP
 
-#include <string>
 #include <functional>
 
 #include "Widgets/Widget.hpp"
 
 #include "Graphics/Components/Sprite.hpp"
-#include "Graphics/Components/Text.hpp"
+#include "Graphics/Text.hpp"
+#include "Graphics/Texture.hpp"
 
 class Button : public Widget
 {
 public:
 	Button() = delete;
-	Button(const std::string& text, Vector2u position = { 0u, 0u }, Vector2u size = { 0u, 0u });
+	Button(Text text, RessourceHandle<Texture> texture, Vector2u position = { 0u, 0u }, Vector2u size = { 0u, 0u });
 	Button(const Button&) = delete;
 	Button(Button&&) = default;
 	~Button() = default;

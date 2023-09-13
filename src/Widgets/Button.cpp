@@ -7,10 +7,10 @@
 
 #include "Maths/Vector3.hpp"
 
-Button::Button(const std::string& text, Vector2u position, Vector2u size)
+Button::Button(Text text, RessourceHandle<Texture> texture, Vector2u position, Vector2u size)
 	: Widget(position, size)
-	, m_sprite(RessourceHandle<Texture>{ std::make_shared<Texture>("widgets/button.png") })
-	, m_text(text)
+	, m_sprite(std::move(texture))
+	, m_text(std::move(text))
 	, m_on_click_callback([](){})
 {
 }

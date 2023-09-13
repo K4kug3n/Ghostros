@@ -1,17 +1,18 @@
-#include "Graphics/Components/Text.hpp"
+#include "Graphics/Text.hpp"
 
 #include "Maths/Vector2.hpp"
 
-Text::Text(const std::string& text)
-	: m_handle()
-	, m_font()
+Text::Text(RessourceHandle<Font> font)
+	: m_font(std::move(font))
+	, m_handle("", m_font->get_handle())
 {
-	if (!m_font.loadFromFile("fonts/arial.ttf"))
-	{
-		throw std::runtime_error("Canno't load arial font");
-	}
-	m_handle.setFont(m_font);
-	set_text(text);
+
+}
+
+Text::Text(RessourceHandle<Font> font, const std::string& text)
+	: m_font(std::move(font))
+	, m_handle(text, m_font->get_handle())
+{
 }
 
 Text::Text(Text&& other) noexcept
